@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "@nhttp/nhttp": "jsr:@nhttp/nhttp@^2.0.2",
+    "@seriousme/opifex": "jsr:@seriousme/opifex@^1.3.0",
+    "liquidjs": "npm:liquidjs@10.19.1"
+  }
+}
