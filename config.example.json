@@ -1,0 +1,10 @@
+{
+  "smtpHost": "smtp.example.com",
+  "smtpPort": "587",
+  "smtpUsername": "username",
+  "smtpPassword": "password",
+  "mqttTls": false,
+  "mqttPort": 1883,
+  "httpPort": 8000,
+  "storeUrl": "https://theattentionbutton.mini.store"
+}

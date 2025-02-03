@@ -1,0 +1,20 @@
+{
+  "name": "@theattentionbutton/backend",
+  "version": "1.0.0",
+  "description": "Backend implementation for the Attention Button device.",
+  "main": "src/main.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Siddharth Singh <me@shantaram.xyz>",
+  "license": "MIT",
+  "dependencies": {
+    "aedes": "^0.51.3",
+    "express": "^4.21.2",
+    "liquidjs": "^10.20.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0"
+  }
+}
