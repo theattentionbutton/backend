@@ -1,0 +1,55 @@
+{% layout "base.liquid", heading:heading, title:title %}
+{% block content %}
+<div id="hero-image" class="img-wrapper">
+    <img src="/attnbtn-red-heart-1200px.webp"
+        alt="Product photo of the Attention Button. The device is a black cuboid with a square base, about two times tall as it is wide. It is displayed at a 45-degree angle showing two faces and the top of the device. The left face has a port for powering the device. The right face has an 8x8 LED matrix showing a pixel drawing of a heart. The top has a knob that doubles as a button.">
+</div>
+
+<div class="tagline">A new way to connect. Available now.</div>
+
+<section>
+    <ol>
+        <li>Rotate the knob to select an image.</li>
+        <li>Press it to send.</li>
+        <li>The paired device lights up and makes a sound, letting your special person know you're thinking of them.
+        </li>
+    </ol>
+</section>
+
+<section>
+    <div class='cta-links'>
+        <a class='btn invert' href='/store'><strong>Get yours today!</strong></a>
+    </div>
+    <p>Already have it? <a href='/account'>Click here.</a></p>
+</section>
+
+<section id="faq">
+    <h2>Frequently Asked Questions</h2>
+
+    <details open>
+        <summary class='invert'>Does it work over long distances?</summary>
+        <p>Yes! As long as both devices are connected to Wi-Fi, they can communicate no matter where you are.</p>
+    </details>
+
+    <details open>
+        <summary class='invert'>Can I customize it?</summary>
+        <p>Yes, all the design files and source code are available on GitHub. Feel free to modify and improve your
+            Attention Button's firmware or run your own backend!</p>
+    </details>
+
+    <details open>
+        <summary class='invert'>What power source does it use?</summary>
+        <p>The device uses a Micro USB cable for power. A cable is included in the box, but you'll need to supply your
+            own power source!</p>
+    </details>
+
+    <details open>
+        <summary class='invert'>How do I pair my device?</summary>
+        <p>Simply follow the pairing instructions in the <a href="/instructions.pdf">instruction booklet</a>.</p>
+    </details>
+</section>
+
+<section>
+</section>
+
+{% endblock %}
