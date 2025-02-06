@@ -5,7 +5,7 @@
   "main": "src/main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "bun build src/main.ts --target node --outfile index.js"
+    "build": "bun build src/main.ts --target node --outfile index.js --format cjs"
   },
   "keywords": [],
   "author": "Siddharth Singh <me@shantaram.xyz>",
