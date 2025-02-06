@@ -4,7 +4,8 @@
   "description": "Backend implementation for the Attention Button device.",
   "main": "src/main.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "bun build src/main.ts --target node --outfile index.js"
   },
   "keywords": [],
   "author": "Siddharth Singh <me@shantaram.xyz>",

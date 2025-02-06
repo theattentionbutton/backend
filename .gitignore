@@ -1,2 +1,5 @@
 config.dev.json
 config.prod.json
+*.mjs
+*.js
+config.json
