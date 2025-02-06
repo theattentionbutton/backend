@@ -4,8 +4,9 @@ import net from "net";
 import tls from "tls";
 import path from "path";
 import Aedes from "aedes";
-import { loadConfig } from "./utils";
+import { getHttpDescription, loadConfig } from "./utils";
 import fs from "fs";
+import { getReasonPhrase } from "http-status-codes";
 
 const config = await loadConfig();
 
@@ -26,6 +27,26 @@ app.get("/", (req, res) => {
 app.get("/store", (_, res) => {
     return res.redirect(config.storeUrl);
 })
+
+app.use((_, __, next) => {
+    const err = new Error(getHttpDescription(404));
+    (err as any).status = 404;
+    next(err);
+});
+
+app.use((err, _, res, __) => {
+    const code = err.status || 500;
+    const details = getHttpDescription(code);
+    const name = getReasonPhrase(code) || "Internal Server Error";
+
+    // Render the LiquidJS template with the error details
+    res.status(code).render('error', {
+        code,
+        details,
+        name,
+        title: name
+    });
+});
 
 // Start the HTTP server
 const httpPort = Number(config.httpPort) || 3000;

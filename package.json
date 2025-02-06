@@ -13,6 +13,7 @@
   "dependencies": {
     "aedes": "^0.51.3",
     "express": "^4.21.2",
+    "http-status-codes": "^2.3.0",
     "liquidjs": "^10.20.1"
   },
   "devDependencies": {
