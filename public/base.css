@@ -40,6 +40,10 @@ header a {
     width: 2rem;
 }
 
+header h1>a {
+    width: unset;
+}
+
 footer {
     display: flex;
     flex-direction: column;
