@@ -1,57 +1,15 @@
-import express from "express";
-import { Liquid } from "liquidjs";
+
 import net from "net";
 import tls from "tls";
-import path from "path";
 import Aedes from "aedes";
-import { getHttpDescription, loadConfig } from "./utils";
+import { config } from './utils/config';
 import fs from "fs";
-import { getReasonPhrase } from "http-status-codes";
+import { createApp } from "./http/app";
 
-const config = loadConfig();
+const app = createApp();
 
-const app = express();
-const liquid = new Liquid({ extname: ".liquid" });
-app.engine("liquid", liquid.express());
-app.set("view engine", "liquid");
-app.set("views", path.resolve("./templates"));
-
-// Serve static files
-app.use(express.static("./public"));
-
-// Define routes
-app.get("/", (req, res) => {
-    res.render("index");
-});
-
-app.get("/store", (_, res) => {
-    return res.redirect(config.storeUrl);
-})
-
-app.use((_, __, next) => {
-    const err = new Error(getHttpDescription(404));
-    (err as any).status = 404;
-    next(err);
-});
-
-app.use((err, _, res, __) => {
-    const code = err.status || 500;
-    const details = getHttpDescription(code);
-    const name = getReasonPhrase(code) || "Internal Server Error";
-
-    // Render the LiquidJS template with the error details
-    res.status(code).render('error', {
-        code,
-        details,
-        name,
-        title: name
-    });
-});
-
-// Start the HTTP server
-const httpPort = Number(config.httpPort) || 3000;
-const httpServer = app.listen(httpPort, config.hostname || "0.0.0.0", () => {
-    console.log(`HTTP listening on http://${config.hostname || "0.0.0.0"}:${httpPort}`);
+app.listen(config.httpPort, config.hostname, () => {
+    console.log(`HTTP listening on http://${config.hostname}:${config.httpPort}`);
 });
 
 // Set up Aedes MQTT broker
