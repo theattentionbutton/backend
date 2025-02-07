@@ -1,10 +1,14 @@
 {
+  "hostname": "0.0.0.0",
+  "httpPort": 3000,
   "smtpHost": "smtp.example.com",
-  "smtpPort": "587",
-  "smtpUsername": "username",
-  "smtpPassword": "password",
-  "mqttTls": false,
+  "smtpPort": 587,
+  "smtpUsername": "smtp",
+  "smtpPassword": "hunter2",
+  "storeUrl": "https://example.com",
   "mqttPort": 1883,
-  "httpPort": 8000,
-  "storeUrl": "https://theattentionbutton.mini.store"
+  "mqttTls": false,
+  "keyPath": "./certs/key.pem",
+  "certPath": "./certs/cert.pem",
+  "caPath": "./certs/ca.pem"
 }

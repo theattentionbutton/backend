@@ -8,7 +8,7 @@ import { getHttpDescription, loadConfig } from "./utils";
 import fs from "fs";
 import { getReasonPhrase } from "http-status-codes";
 
-const config = await loadConfig();
+const config = loadConfig();
 
 const app = express();
 const liquid = new Liquid({ extname: ".liquid" });
