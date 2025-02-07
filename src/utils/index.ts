@@ -1,29 +1,9 @@
-import fs from "fs";
-import { configSchema } from "./schemas/config";
-import { z } from 'zod';
-
 export const die = (code: number, ...args: any[]): never => {
     console.log(...args);
     process.exit(code);
 }
 
 export const fatal = (...args: any[]) => die(1, "fatal:", ...args);
-
-export const loadConfig = (): z.infer<typeof configSchema> => {
-    const configPath = process.env.TAB_CONFIG_PATH || "./config.json";
-    console.log(configPath);
-    if (!fs.existsSync(configPath)) {
-        return fatal("Supplied config path did not exist!");
-    }
-
-    const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
-    const parsed = configSchema.safeParse(config);
-    if (!parsed.success) {
-        return die(1, parsed.error.message);
-    }
-
-    return parsed.data;
-}
 
 export const getHttpDescription = (code: number) => {
     return {
