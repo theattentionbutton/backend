@@ -2,9 +2,9 @@
 import net from "net";
 import tls from "tls";
 import Aedes from "aedes";
-import { config } from './utils/config';
+import { config } from './utils/config.ts';
 import fs from "fs";
-import { createApp } from "./http/app";
+import { createApp } from "./http/app.ts";
 
 const app = createApp();
 

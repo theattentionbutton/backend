@@ -1,11 +1,10 @@
 import { z } from "zod";
-import { fatal, die } from "./index";
-import { configSchema } from "../schemas/config";
+import { fatal, die } from "./index.ts";
+import { configSchema } from "../schemas/config.ts";
 import fs from "fs";
 
 export const loadConfig = (): z.infer<typeof configSchema> => {
     const configPath = process.env.TAB_CONFIG_PATH || "./config.json";
-    console.log(configPath);
     if (!fs.existsSync(configPath)) {
         return fatal("Supplied config path did not exist!");
     }

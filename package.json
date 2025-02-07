@@ -5,11 +5,12 @@
   "main": "src/main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "bun build src/main.ts --target node --outfile index.mjs"
+    "run": "node --experimental-strip-types src/main.ts"
   },
   "keywords": [],
   "author": "Siddharth Singh <me@shantaram.xyz>",
   "license": "MIT",
+  "type": "module",
   "dependencies": {
     "aedes": "^0.51.3",
     "better-sqlite3": "^11.8.1",
