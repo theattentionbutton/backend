@@ -168,6 +168,13 @@ footer ul {
     margin-bottom: 1rem;
 }
 
+.cookie-notice {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
 @media (max-aspect-ratio: 1/1) {
     :root {
         --root-padding: 0;
@@ -183,5 +190,12 @@ footer ul {
 
     h1 {
         font-size: 1.6rem;
+    }
+
+    footer ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        margin-bottom: 0.25rem;
     }
 }
