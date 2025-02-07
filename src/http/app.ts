@@ -4,13 +4,12 @@ import path from "path";
 import cors from "cors";
 import session from "express-session";
 import sqlite from "better-sqlite3";
-import SqliteSessionStore from "better-sqlite3-session-store";
-import errors from "./routes/errors";
-import index from "./routes/index";
-import store from "./routes/store";
-import { config } from "../utils/config";
-import { timeMs } from "../utils/time";
-
+import errors from "./routes/errors.ts";
+import index from "./routes/index.ts";
+import store from "./routes/store.ts";
+import { config } from "../utils/config.ts";
+import { timeMs } from "../utils/time.ts";
+import { SqliteStore } from "../utils/sqlite3-session-store.ts";
 
 const makeCors = () => cors({
     origin: "https://theattentionbutton.in",
@@ -20,6 +19,8 @@ const makeCors = () => cors({
 const makeSession = () => {
     const db = new sqlite("sessions.db");
     return session({
+        resave: false,
+        saveUninitialized: false,
         cookie: {
             secure: true,
             maxAge: timeMs({ d: 7 }),
@@ -28,7 +29,7 @@ const makeSession = () => {
         },
 
         secret: config.secrets,
-        store: new SqliteSessionStore({
+        store: new SqliteStore({
             client: db,
             expired: {
                 clear: true,
