@@ -1,3 +1,5 @@
+import express from "express";
+
 export const die = (code: number, ...args: any[]): never => {
     console.log(...args);
     process.exit(code);
@@ -23,4 +25,21 @@ export const getHttpDescription = (code: number) => {
         503: "The server is temporarily unavailable or overloaded.",
         504: "The gateway timed out waiting for a response."
     }[code] || "An unknown error occurred.";
+}
+
+const RENDER_ERROR_OPTS = {
+    code: "Error",
+    title: "Error",
+    details: "An unknown error occurred.",
+    name: "Unknown error"
+}
+
+export type RenderErrorOpts = Partial<Record<keyof typeof RENDER_ERROR_OPTS, string | number>>;
+
+const errorOpts = (opts: RenderErrorOpts): typeof RENDER_ERROR_OPTS => {
+    return Object.assign(JSON.parse(JSON.stringify(RENDER_ERROR_OPTS)), opts);
+}
+
+export const renderError = (res: express.Response, opts: RenderErrorOpts, code = 400) => {
+    return res.status(code).render("error", errorOpts(opts));
 }
