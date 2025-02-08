@@ -8,9 +8,11 @@ const baseConfigSchema = z.object({
     smtpPort: z.number(),
     smtpUsername: z.string(),
     smtpPassword: z.string(),
+    smtpSecure: z.boolean().default(false),
     storeUrl: z.string().default("https://theattentionbutton.in/store"),
     mqttPort: z.number().default(1883),
-    secrets: z.string().array().nonempty()
+    secrets: z.string().array().nonempty(),
+    captchaSecret: z.string().nonempty()
 });
 
 const mqttTlsTrueSchema = z.object({
