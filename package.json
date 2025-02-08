@@ -12,6 +12,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "@types/escape-html": "^1.0.4",
     "@types/nodemailer": "^6.4.17",
     "@types/nodemailer-smtp-transport": "^2.7.8",
     "aedes": "^0.51.3",
@@ -19,6 +20,7 @@
     "better-sqlite3": "^11.8.1",
     "better-sqlite3-session-store": "^0.1.0",
     "cors": "^2.8.5",
+    "escape-html": "^1.0.3",
     "express": "^4.21.2",
     "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.1",

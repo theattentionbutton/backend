@@ -4,7 +4,7 @@ import { registerSchema } from "../../schemas/auth.ts";
 import { renderError, UUID_REGEX } from "../../utils/index.ts";
 import { config } from "../../utils/config.ts";
 import { checkVerificationEntry, confirmUser, createUser, deleteUnconfirmedUsers, getUser } from "../../db/auth.ts";
-import { db } from "../../db/index.ts";
+import escape from 'escape-html';
 import argon2 from "argon2";
 import { fromError } from "zod-validation-error";
 import { sendEmail } from "../../mail.ts";
@@ -65,7 +65,7 @@ export const requestRegistration: express.Handler = async (req, res, next) => {
     return res.render("register-result", {
         title: "Registration",
         heading: "Verify your email",
-        message: `We have sent an e-mail to the address ${body.authEmail}.
+        message: `We have sent an e-mail to the address ${escape(body.authEmail)}.
             Please click the link within to confirm your e-mail address and 
             finish creating your account.`
     });
