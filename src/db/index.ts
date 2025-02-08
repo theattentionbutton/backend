@@ -12,9 +12,10 @@ export interface User {
     id: string;
     name: string;
     username: string;
+    verification_code: string;
     password: string;
     created_at: number;
-    confirmed: boolean;
+    confirmed: number; /* SQLite3 does not support bools. */
 }
 
 export interface Room {
@@ -42,22 +43,21 @@ export const db = new Kysely<Database>({ dialect });
 
 await db.schema.createTable('users')
     .ifNotExists()
-    .addColumn('id', 'text', col => col.primaryKey().onDelete('cascade'))
+    .addColumn('id', 'text', col => col.primaryKey())
     .addColumn('name', 'text', col => col.defaultTo(""))
     .addColumn("username", 'text', col => col.notNull().unique())
+    .addColumn("verification_code", 'text', col => col.notNull().unique())
     .addColumn('password', 'text', col => col.notNull())
-    .addColumn('created_at', 'integer', col => col.notNull().defaultTo(sql`unixepoch()`))
-    .addColumn('confirmed', 'boolean', col => col.notNull().defaultTo(false))
-    .execute();
+    .addColumn('created_at', 'integer', col => col.defaultTo(sql`(unixepoch())`))
+    .addColumn('confirmed', 'integer', col => col.notNull().defaultTo(0)).execute();
 
 await db.schema
     .createTable("rooms")
     .ifNotExists()
-    .addColumn("id", "text", (col) => col.primaryKey().onDelete("cascade"))
+    .addColumn("id", "text", (col) => col.primaryKey())
     .addColumn("secret", "text", (col) => col.notNull().unique())
     .addColumn("name", "text", (col) => col.notNull())
-    .addColumn("created_at", "integer", (col) =>
-        col.notNull().defaultTo(sql`unixepoch()`)
+    .addColumn("created_at", "integer", (col) => col.defaultTo(sql`(unixepoch())`)
     )
     .execute();
 
@@ -81,12 +81,9 @@ await db.schema
     .addColumn("from", "text", (col) => col.notNull())
     .addColumn("to", "text", (col) => col.notNull())
     .addColumn("created_at", "integer", (col) =>
-        col.notNull().defaultTo(sql`unixepoch()`)
+        col.defaultTo(sql`(unixepoch())`)
     )
     .addForeignKeyConstraint("fk_room_requests_from", ["from"], "users", ["id"], (cb) =>
-        cb.onDelete("cascade")
-    )
-    .addForeignKeyConstraint("fk_room_requests_to", ["to"], "users", ["id"], (cb) =>
         cb.onDelete("cascade")
     )
     .execute();
