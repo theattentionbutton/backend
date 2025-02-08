@@ -12,6 +12,8 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "@types/nodemailer": "^6.4.17",
+    "@types/nodemailer-smtp-transport": "^2.7.8",
     "aedes": "^0.51.3",
     "better-sqlite3": "^11.8.1",
     "better-sqlite3-session-store": "^0.1.0",
@@ -22,6 +24,8 @@
     "http-status-codes": "^2.3.0",
     "kysely": "^0.27.5",
     "liquidjs": "^10.20.1",
+    "nodemailer": "^6.10.0",
+    "nodemailer-smtp-transport": "^2.7.4",
     "zod": "^3.24.1"
   },
   "devDependencies": {
