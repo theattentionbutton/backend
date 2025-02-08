@@ -43,3 +43,5 @@ const errorOpts = (opts: RenderErrorOpts): typeof RENDER_ERROR_OPTS => {
 export const renderError = (res: express.Response, opts: RenderErrorOpts, code = 400) => {
     return res.status(code).render("error", errorOpts(opts));
 }
+
+export const UUID_REGEX = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
