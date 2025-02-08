@@ -5,7 +5,7 @@
   "main": "src/main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "node --experimental-strip-types src/main.ts"
+    "serve": "NODE_NO_WARNINGS=1 node src/main.ts"
   },
   "keywords": [],
   "author": "Siddharth Singh <me@shantaram.xyz>",
