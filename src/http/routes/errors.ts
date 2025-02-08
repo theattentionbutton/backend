@@ -9,6 +9,7 @@ export const catchall: express.Handler = (_, __, next) => {
 }
 
 export const renderer: express.ErrorRequestHandler = (err, _, res, __) => {
+    console.log(err);
     const code = err.status || 500;
     const details = getHttpDescription(code);
     const name = getReasonPhrase(code) || "Internal Server Error";
