@@ -1,3 +1,4 @@
+import "../utils/express-session.d.ts";
 import express from "express";
 import { Liquid } from "liquidjs";
 import path from "path";
@@ -54,12 +55,6 @@ const makeSession = () => {
             }
         })
     })
-}
-
-declare module "express-session" {
-    interface SessionData {
-        username?: string;
-    }
 }
 
 const requiresAuth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
