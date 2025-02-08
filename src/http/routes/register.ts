@@ -3,7 +3,7 @@ import { verify } from "hcaptcha";
 import { registerSchema } from "../../schemas/auth.ts";
 import { renderError, UUID_REGEX } from "../../utils/index.ts";
 import { config } from "../../utils/config.ts";
-import { deleteUnconfirmedUsers, getUser } from "../../db/auth.ts";
+import { checkVerificationEntry, confirmUser, createUser, deleteUnconfirmedUsers, getUser } from "../../db/auth.ts";
 import { db } from "../../db/index.ts";
 import argon2 from "argon2";
 import { fromError } from "zod-validation-error";
@@ -43,7 +43,7 @@ export const requestRegistration: express.Handler = async (req, res, next) => {
         })
     }
 
-    const created = await db.insertInto('users').values({
+    const created = await createUser({
         confirmed: 0,
         created_at: Date.now(),
         id: crypto.randomUUID(),
@@ -51,7 +51,7 @@ export const requestRegistration: express.Handler = async (req, res, next) => {
         password: await argon2.hash(body.authPassword),
         username: body.authEmail,
         verification_code: crypto.randomUUID()
-    }).returningAll().executeTakeFirst();
+    });
 
     if (!created) return next(new Error("Error creating user."));
 
@@ -79,10 +79,10 @@ export const verifyEmail: express.Handler = async (req, res) => {
         name: "Bad Request"
     });
     if (!uuid || !UUID_REGEX.test(uuid)) return error();
-    const user = await db.selectFrom('users').selectAll().where('verification_code', '=', uuid).where('confirmed', '=', 0).executeTakeFirst();
+    const user = await checkVerificationEntry(uuid);
     if (!user) return error();
 
-    await db.updateTable('users').set({ confirmed: 1 }).where('id', '=', user.id).execute();
+    await confirmUser(user.id);
     return res.render("register-result", {
         title: "Registration",
         heading: "Verified successfully!",
