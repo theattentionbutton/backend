@@ -4,9 +4,10 @@ import path from "path";
 import cors from "cors";
 import session from "express-session";
 import sqlite from "better-sqlite3";
-import errors from "./routes/errors.ts";
-import index from "./routes/index.ts";
-import store from "./routes/store.ts";
+import * as errors from "./routes/errors.ts";
+import * as index from "./routes/index.ts";
+import * as store from "./routes/store.ts";
+import * as register from "./routes/register.ts";
 import { config } from "../utils/config.ts";
 import { timeMs } from "../utils/time.ts";
 import { SqliteStore } from "../utils/sqlite3-session-store.ts";
@@ -39,6 +40,19 @@ const makeSession = () => {
     })
 }
 
+declare module "express-session" {
+    interface SessionData {
+        username?: string;
+    }
+}
+
+const requiresAuth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (req.session.username) {
+        return next();
+    }
+    return res.redirect('/login');
+}
+
 export const createApp = () => {
     const app = express();
     const liquid = new Liquid({ extname: ".liquid" });
@@ -51,10 +65,10 @@ export const createApp = () => {
     app.use(makeSession());
     app.get("/", index.get);
     app.get("/store", store.get);
+    app.get('/register', register.get);
 
-    /** Routes that should enforce cors! */
     app.use(makeCors());
-    /** Routes that should enforce cors! */
+    app.get('/account', requiresAuth, index.get);
 
     app.use(errors.catchall);
     app.use(errors.renderer);

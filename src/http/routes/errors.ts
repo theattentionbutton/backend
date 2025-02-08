@@ -21,5 +21,3 @@ export const renderer: express.ErrorRequestHandler = (err, _, res, __) => {
         title: name
     });
 }
-
-export default { renderer, catchall };

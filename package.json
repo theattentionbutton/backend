@@ -28,5 +28,6 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/express-session": "^1.18.1"
-  }
+  },
+  "pnpm.onlyBuiltDependencies": ["better-sqlite3"]
 }
