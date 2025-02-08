@@ -15,10 +15,12 @@
     "@types/nodemailer": "^6.4.17",
     "@types/nodemailer-smtp-transport": "^2.7.8",
     "aedes": "^0.51.3",
+    "argon2": "^0.41.1",
     "better-sqlite3": "^11.8.1",
     "better-sqlite3-session-store": "^0.1.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.1",
     "hcaptcha": "^0.2.0",
     "http-status-codes": "^2.3.0",
@@ -26,7 +28,8 @@
     "liquidjs": "^10.20.1",
     "nodemailer": "^6.10.0",
     "nodemailer-smtp-transport": "^2.7.4",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "zod-validation-error": "^3.4.0"
   },
   "devDependencies": {
     "@hcaptcha/types": "^1.0.4",
@@ -36,6 +39,7 @@
     "@types/express-session": "^1.18.1"
   },
   "pnpm.onlyBuiltDependencies": [
-    "better-sqlite3"
+    "better-sqlite3",
+    "argon2"
   ]
 }
