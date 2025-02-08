@@ -1,24 +1,27 @@
 import nodemailer from "nodemailer";
-import { config } from "./utils/config";
-import { Liquid, Template } from "liquidjs";
+import { config } from "./utils/config.ts";
+import liquidjs from "liquidjs";
 
-const emails = new Liquid({
+const emails = new liquidjs.Liquid({
     extname: '.liquid',
     root: './emails',
     jsTruthy: true
 });
 
 const templates: Record<string, {
-    text: Template[],
-    html: Template[]
+    text: liquidjs.Template[],
+    html: liquidjs.Template[]
 }> = {};
+
+const txt = (name: string) => `${name}.txt.liquid`
+const html = (name: string) => `${name}.html.liquid`
 
 const renderEmail = async (name: string, ctx: Record<string, any>) => {
     let tpls = templates[name];
     if (!tpls) {
         tpls = templates[name] = {
-            text: await emails.parseFile(name + '.txt'),
-            html: await emails.parseFile(name + '.html')
+            text: await emails.parseFile(txt(name)),
+            html: await emails.parseFile(html(name))
         }
     }
     return {
