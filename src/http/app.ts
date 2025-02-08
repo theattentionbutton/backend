@@ -40,7 +40,7 @@ const makeSession = () => {
         resave: false,
         saveUninitialized: false,
         cookie: {
-            secure: true,
+            secure: process.env.TAB_ENV !== 'dev',
             maxAge: timeMs({ d: 7 }),
             sameSite: 'lax',
             httpOnly: true,

@@ -1,6 +1,6 @@
 {
     "ext": "ts,css,liquid",
-    "exec": "pnpm serve",
+    "exec": "pnpm serve-dev",
     "watch": [
         "src/",
         "templates/",
