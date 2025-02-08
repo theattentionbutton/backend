@@ -1,5 +1,6 @@
 import { sql } from "kysely";
-import { db, User } from "./index.ts";
+import type { User } from './index.ts';
+import { db } from "./index.ts";
 import { timeMs } from "../utils/time.ts"
 
 export const getUser = async (username: string, confirmed?: 0 | 1) => {
