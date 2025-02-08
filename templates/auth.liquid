@@ -39,5 +39,11 @@
     <div class="submit-group form-group">
         <input type="submit" value="{{ title }}">
     </div>
+
+    {% if register %}
+    <p>Already have an account? <a href="/register">Sign in</a>.</p>
+    {% else %}
+    <p>Don't have an account yet? <a href="/register">Sign up</a>.</p>
+    {% endif %}
 </form>
 {% endblock %}
