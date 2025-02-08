@@ -14,7 +14,7 @@ export const get: express.Handler = (_, res) => {
 }
 
 export const requestRegistration: express.Handler = async (req, res, next) => {
-    const parseResult = registerSchema.safeParse(req.body);
+    const parseResult = await registerSchema.safeParseAsync(req.body);
     if (!parseResult.success) {
         return renderError(res, {
             details: fromError(parseResult.error).toString(),
