@@ -1,0 +1,43 @@
+{% block head_extras %}
+<script src="https://js.hcaptcha.com/1/api.js?recaptchacompat=off" async defer></script>
+{% endblock %}
+
+{% if register %}
+{% assign title = "Register" %}
+{% else %}
+{% assign title = "Login" %}
+{% endif %}
+{% layout "base.liquid", heading:heading, title:title %}
+{% block content %}
+{% assign action = "login" %}
+{%if register %} {% assign action = "register" %} {% endif %}
+<form method="post" action="{{ action }}">
+    {% if register %}
+    <div class="form-group">
+        <label for="register-name">Name</label>
+        <input type="text" name="register-name" id="register-name" required>
+    </div>
+    {% endif %}
+
+    <div class="form-group">
+        <label for="auth-email">E-mail</label>
+        <input type="email" name="auth-email" id="auth-email" required>
+    </div>
+    <div class="form-group">
+        <label for="auth-pw">Password</label>
+        <input type="password" name="auth-password" id="auth-pw" required>
+    </div>
+
+    {% if register %}
+    <div class="form-group">
+        <label for="auth-confirm-pw">Confirm password</label>
+        <input type="password" name="auth-confirm-pw" id="auth-confirm-pw" required>
+    </div>
+    <div class="h-captcha" data-sitekey="9be64f66-a996-43d0-ace0-3bd2773ebfda" required></div>
+    {% endif %}
+
+    <div class="submit-group form-group">
+        <input type="submit" value="{{ title }}">
+    </div>
+</form>
+{% endblock %}
