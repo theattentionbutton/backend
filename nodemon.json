@@ -1,0 +1,10 @@
+{
+    "ext": "ts,css,liquid",
+    "exec": "pnpm serve",
+    "watch": [
+        "src/",
+        "templates/",
+        "public/*.css"
+    ],
+    "verbose": false
+}
