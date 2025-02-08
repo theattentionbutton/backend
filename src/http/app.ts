@@ -78,9 +78,10 @@ export const createApp = () => {
     app.get("/store", store.get);
     app.get('/register', register.get);
     app.get('/login', login.get);
-    app.get('/account', requiresAuth, index.get);
+    app.post('/login', login.post);
     app.post("/register", limiter, register.requestRegistration);
     app.get('/register/verify/:uuid', limiter, register.verifyEmail);
+    app.get('/account', requiresAuth, index.get);
 
     app.use(errors.catchall);
     app.use(errors.renderer);
