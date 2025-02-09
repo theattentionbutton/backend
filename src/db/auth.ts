@@ -2,6 +2,7 @@ import { sql } from "kysely";
 import type { User } from './index.ts';
 import { db } from "./index.ts";
 import { timeMs } from "../utils/time.ts"
+import { hash } from "argon2";
 
 export const getUser = async (username: string, confirmed?: 0 | 1) => {
     const query = db.selectFrom('users').selectAll().where('username', '=', username)
@@ -35,4 +36,11 @@ export const checkVerificationEntry = async (code: string) => {
 
 export const confirmUser = async (username: string) => {
     return await db.updateTable('users').set({ confirmed: 1 }).where('id', '=', username).execute();
+}
+
+export const updatePassword = async (username: string, newPass: string) => {
+    return await db.updateTable('users')
+        .set({ password: await hash(newPass) })
+        .where('username', '=', username)
+        .execute();
 }
