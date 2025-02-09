@@ -9,6 +9,7 @@ import * as errors from "./routes/errors.ts";
 import * as index from "./routes/index.ts";
 import * as store from "./routes/store.ts";
 import * as register from "./routes/register.ts";
+import * as account from "./routes/account.ts";
 import * as login from "./routes/login.ts";
 import { config } from "../utils/config.ts";
 import { timeMs } from "../utils/time.ts";
@@ -28,7 +29,8 @@ const limiter = rateLimit({
         const firstPart = (s: string, sep: string) => s.split(sep)[0].trim()
         const xff = req.header('X-Forwarded-For');
         const realIP = req.header('X-Real-IP');
-        const clientIP = xff ? firstPart(xff, ',') : realIP; // Use first IP in XFF or fallback to X-Real-IP
+        // Use first IP in XFF or fallback to X-Real-IP
+        const clientIP = xff ? firstPart(xff, ',') : realIP;
         const path = firstPart(req.originalUrl, '?');
         return `${clientIP}-${path}`;
     }
@@ -57,6 +59,11 @@ const makeSession = () => {
     })
 }
 
+const elideWhenAuthed = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (!req.session.username) return next();
+    return res.redirect('/account');
+}
+
 const requiresAuth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (req.session.username) return next();
     return res.redirect('/login');
@@ -76,12 +83,15 @@ export const createApp = () => {
 
     app.get("/", index.get);
     app.get("/store", store.get);
-    app.get('/register', register.get);
-    app.get('/login', login.get);
+
+    app.get('/register', elideWhenAuthed, register.get);
+    app.get('/login', elideWhenAuthed, login.get);
     app.post('/login', login.post);
+
     app.post("/register", limiter, register.requestRegistration);
     app.get('/register/verify/:uuid', limiter, register.verifyEmail);
-    app.get('/account', requiresAuth, index.get);
+
+    app.get('/account', requiresAuth, account.get);
 
     app.use(errors.catchall);
     app.use(errors.renderer);
