@@ -92,6 +92,7 @@ export const createApp = () => {
     app.get('/register/verify/:uuid', limiter, register.verifyEmail);
 
     app.get('/account', requiresAuth, account.get);
+    app.get('/logout', requiresAuth, account.logout);
 
     app.use(errors.catchall);
     app.use(errors.renderer);
