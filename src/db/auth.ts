@@ -19,7 +19,7 @@ export const deleteUnconfirmedUsers = async () => {
         .execute();
 }
 
-export const createUser = async (args: User) => {
+export const createUser = async (args: Omit<User, 'created_at'>) => {
     return await db.insertInto('users')
         .values(args)
         .returningAll()
