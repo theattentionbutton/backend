@@ -3,19 +3,59 @@
 {% endblock %}
 {% layout "base.liquid", heading:heading, title:title %}
 {% block content %}
+
+<details>
+    <summary class="invert">Manage your account</summary>
+    <p>
+        Logged in as <strong>{{ username }}</strong>. <a href="/logout">Sign out</a>
+    </p>
+    <h3>Change your password</h3>
+    <form class="change-pw" method="post" action="/change-password">
+        <div class="form-group">
+            <label for="old-pw">Current password</label>
+            <input type="password" name="old-pw" id="old-pw">
+        </div>
+        <div class="form-group">
+            <label for="new-pw">New password</label>
+            <input type="password" name="new-pw" id="new-pw">
+        </div>
+        <div class="form-group">
+            <label for="confirm-new-pw">Confirm new password</label>
+            <input type="password" name="confirm-new-pw" id="confirm-new-pw">
+        </div>
+        <div class="form-group submit-group">
+            <input type="submit" value="Set">
+        </div>
+    </form>
+</details>
+
 <details open>
     <summary class="invert">Your rooms</summary>
     <div class="rooms">
-        <div class="room create-room invert">
-            <a href='/create-room' aria-role="button" class="iconoir-plus"></a>
-        </div>
+        <form class="room create-room">
+            <div class="room-title">Create a room</div>
+            <div class="form-group">
+                <label class='hidden' for="room-name">Room name</label>
+                <input required type="text" name="room-name" id="room-name" placeholder="Room name...">
+            </div>
+            <button type="submit" class="invert" value="Create">
+                <i class="iconoir-plus action"></i>
+                <div class="hidden">Create</div>
+            </button>
+        </form>
         {% for room in rooms %}
         <div class="room">
-            <div class="room-title invert">{{ room.title }}</div>
-        </div>
-        <div class="room-meta">
-            <div><span class="room-member-count invert">{{ room.count }}</span> members</div>
-            <div><a href="/rooms/{{ room.uuid }}">Manage</a></div>
+            <div class="room-title invert">{{ room.name }}</div>
+            <div class="room-meta">
+                <div>
+                    {% if room.count > 1 %}
+                    <span class="room-member-count invert">{{ room.count }}</span> members
+                    {% else %}
+                    <span>Just you. Invite someone!</span>
+                    {% endif %}
+                </div>
+                <div><a href="/rooms/{{ room.id }}">Manage</a></div>
+            </div>
         </div>
         {% endfor %}
     </div>
@@ -44,28 +84,4 @@
     {% endif %}
 </details>
 
-<details open>
-    <summary class="invert">Manage your account</summary>
-    <p>
-        Logged in as <strong>user@example.com</strong>. <a href="/logout">Sign out</a>
-    </p>
-    <h3>Change your password</h3>
-    <form class="change-pw" method="post" action="/change-password">
-        <div class="form-group">
-            <label for="old-pw">Current password</label>
-            <input type="password" name="old-pw" id="old-pw">
-        </div>
-        <div class="form-group">
-            <label for="new-pw">New password</label>
-            <input type="password" name="new-pw" id="new-pw">
-        </div>
-        <div class="form-group">
-            <label for="confirm-new-pw">Confirm new password</label>
-            <input type="password" name="confirm-new-pw" id="confirm-new-pw">
-        </div>
-        <div class="form-group submit-group">
-            <input type="submit" value="Set">
-        </div>
-    </form>
-</details>
 {% endblock %}
