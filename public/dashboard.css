@@ -1,28 +1,17 @@
-.create-room {
-    font-size: 5rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.room {
-    width: 6rem;
-    height: 6rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    border: 2px solid var(--body-secondary);
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-}
-
 .room-title {
     font-size: 0.9rem;
     padding: 0.1rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-align: center;
+    border-bottom: 2px solid var(--body-secondary);
+    width: 100%;
+    margin-bottom: 0.25rem;
+}
+
+button .icon {
+    font-size: 1.5rem;
 }
 
 .room-meta {
@@ -36,10 +25,19 @@
 }
 
 div.rooms {
-    max-width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.room {
+    border: 2px solid var(--body-secondary);
     display: flex;
-    overflow-x: scroll;
-    gap: 0.5rem;
+    flex-direction: column;
+    height: 8rem;
+    width: 100%;
 }
 
 .room-member-count {
@@ -88,18 +86,6 @@ button.action {
     font-size: 1.4rem;
 }
 
-@media screen and (max-aspect-ratio: 1/1) {
-    .invite-actions {
-        font-size: 2rem;
-    }
-
-    .invite {
-        padding: 0.25rem;
-        padding-top: 0;
-        padding-bottom: 0;
-    }
-}
-
 .invite,
 .room {
     border-radius: 0.25rem;
@@ -128,6 +114,22 @@ form.change-pw {
     width: calc(100% - 4rem);
     margin-left: 2rem;
     margin-right: 2rem;
+}
+
+@media screen and (max-aspect-ratio: 1/1) {
+    div.rooms {
+        grid-template-columns: 1fr;
+    }
+
+    .invite-actions {
+        font-size: 2rem;
+    }
+
+    .invite {
+        padding: 0.25rem;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
 }
 
 @media screen and (max-aspect-ratio: 3/4) {
