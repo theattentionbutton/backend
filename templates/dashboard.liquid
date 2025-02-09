@@ -9,19 +9,25 @@
         <div class="room create-room invert">
             <a href='/create-room' aria-role="button" class="iconoir-plus"></a>
         </div>
+        {% for room in rooms %}
         <div class="room">
-            <div class="room-title invert">a really long room title</div>
-            <div class="room-meta">
-                <div><span class="room-member-count invert">3</span> members</div>
-                <div><a href="/rooms/{{ uuid  }}">Manage</a></div>
-            </div>
+            <div class="room-title invert">{{ room.title }}</div>
         </div>
+        <div class="room-meta">
+            <div><span class="room-member-count invert">{{ room.count }}</span> members</div>
+            <div><a href="/rooms/{{ room.uuid }}">Manage</a></div>
+        </div>
+        {% endfor %}
     </div>
+    {% if invites.size > 0 %}
     <h3>Invites</h3>
     <div class="invites">
-        <form method=post class=invite>
-            <div class="invite-text"><strong>person@example.com</strong> invited you to <strong>room name</strong>.
+        {% for invite in invites %}
+        <form method="post" action="/invites/{{ invite.id }}">
+            <div class="invite-text">
+                <strong>{{ invite.from }}</strong> invited you to <strong>{{ invite.roomName }}</strong>.
             </div>
+
             <div class="invite-actions">
                 <button type="submit" value="accept" name="action" class="action invert">
                     <i class="iconoir-check action"></i>
@@ -33,16 +39,18 @@
                 </button>
             </div>
         </form>
+        {% endfor %}
     </div>
-    </div>
+    {% endif %}
 </details>
+
 <details open>
     <summary class="invert">Manage your account</summary>
     <p>
         Logged in as <strong>user@example.com</strong>. <a href="/logout">Sign out</a>
     </p>
     <h3>Change your password</h3>
-    <form class="change-pw">
+    <form class="change-pw" method="post" action="/change-password">
         <div class="form-group">
             <label for="old-pw">Current password</label>
             <input type="password" name="old-pw" id="old-pw">
