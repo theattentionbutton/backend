@@ -11,6 +11,7 @@ import * as store from "./routes/store.ts";
 import * as register from "./routes/register.ts";
 import * as account from "./routes/account.ts";
 import * as login from "./routes/login.ts";
+import * as legalese from "./routes/legalese.ts";
 import { config } from "../utils/config.ts";
 import { timeMs } from "../utils/time.ts";
 import { SqliteStore } from "../utils/sqlite3-session-store.ts";
@@ -83,6 +84,8 @@ export const createApp = () => {
 
     app.get("/", index.get);
     app.get("/store", store.get);
+    app.get('/terms-of-service', legalese.tos);
+    app.get('/privacy-policy', legalese.privacy);
 
     app.get('/register', elideWhenAuthed, register.get);
     app.get('/login', elideWhenAuthed, login.get);

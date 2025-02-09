@@ -1,0 +1,48 @@
+{% layout "base.liquid", heading:heading, title:title %}
+{% block content %}
+<section class="section">
+    <h3>1. Data We Collect</h3>
+    <p>We collect minimal data necessary to provide the Service:</p>
+    <ul>
+        <li>Name (user-provided, used for in-app addressing)</li>
+        <li>Email Address (for registration and communication)</li>
+        <li>IP Address (for rate-limiting)</li>
+        <li>Session Cookie (required for login)</li>
+        <li>hCaptcha (for bot prevention)</li>
+        <li>Nginx Logs (basic server logs, no additional logging)</li>
+    </ul>
+</section>
+
+<section class="section">
+    <h3>2. Data Usage & Sharing</h3>
+    <p>Data is used solely for account operation, security, and communication. No data is shared with third parties.
+        All data is encrypted, and passwords are securely hashed.</p>
+</section>
+
+<section class="section">
+    <h3>3. Data Retention & Deletion</h3>
+    <p>The only persistent data stored is the email address. Users can request account deletion by contacting <a
+            href="mailto:contact@theattentionbutton.in">contact@theattentionbutton.in</a>.</p>
+</section>
+
+<section class="section">
+    <h3>4. Cookies</h3>
+    <p>The Service requires a session cookie and does not support opting out of cookies.</p>
+</section>
+
+<section class="section">
+    <h3>5. Data Storage Location</h3>
+    <p>All data is stored on a server located in Germany.</p>
+</section>
+
+<section class="section">
+    <h3>6. Security Measures</h3>
+    <p>We implement encryption, email-based authentication, and rate-limiting measures to enhance security.</p>
+</section>
+
+<section class="section">
+    <h3>7. Changes to the Privacy Policy</h3>
+    <p>Policy updates will be posted on the homepage. Continued use of the Service constitutes acceptance of any
+        updates.</p>
+</section>
+{% endblock %}
