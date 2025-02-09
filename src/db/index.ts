@@ -27,6 +27,7 @@ export interface Room {
     id: string;
     secret: string;
     name: string;
+    created_at: number;
 }
 
 export interface Membership {
@@ -89,9 +90,7 @@ await db.schema
     .addColumn("to", "text", (col) => col.notNull())
     .addColumn("id", "text", (col) => col.notNull().unique())
     .addColumn("room_id", "text", (col) => col.notNull())
-    .addColumn("created_at", "integer", (col) =>
-        col.defaultTo(sql`(unixepoch())`)
-    )
+    .addColumn("created_at", "integer", (col) => col.defaultTo(sql`(unixepoch())`))
     .addForeignKeyConstraint("fk_invites_from", ["from"], "users", ["id"], (cb) =>
         cb.onDelete("cascade")
     )
