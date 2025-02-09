@@ -6,6 +6,11 @@ export interface Database {
     rooms: Room;
     memberships: Membership;
     invites: Invite;
+    room_user_count: {
+        room_id: string,
+        room_name: string,
+        user_count: number
+    }
 }
 
 export interface User {
@@ -34,6 +39,7 @@ export interface Invite {
     to: string;
     created_at: number;
     id: string;
+    room_id: string;
 }
 
 const dialect = new SqliteDialect({
@@ -82,10 +88,28 @@ await db.schema
     .addColumn("from", "text", (col) => col.notNull())
     .addColumn("to", "text", (col) => col.notNull())
     .addColumn("id", "text", (col) => col.notNull().unique())
+    .addColumn("room_id", "text", (col) => col.notNull())
     .addColumn("created_at", "integer", (col) =>
         col.defaultTo(sql`(unixepoch())`)
     )
     .addForeignKeyConstraint("fk_invites_from", ["from"], "users", ["id"], (cb) =>
         cb.onDelete("cascade")
+    )
+    .addForeignKeyConstraint('fk_room_id', ['room_id'], 'rooms', ['id'], (cb) =>
+        cb.onDelete('cascade')
+    )
+    .execute();
+
+await db.schema
+    .createView('room_user_count')
+    .ifNotExists()
+    .as(db.selectFrom('memberships')
+        .innerJoin('rooms', 'rooms.id', 'memberships.room')
+        .select([
+            'rooms.id as room_id',
+            'rooms.name as room_name',
+            sql<number>`count(memberships.user)`.as('user_count')
+        ])
+        .groupBy('rooms.id')
     )
     .execute();
