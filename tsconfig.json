@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "ES2024"
+        ],
+        "esModuleInterop": true,
+        "module": "NodeNext",
+        "allowImportingTsExtensions": true,
+        "noEmit": true
+    }
+}
