@@ -140,6 +140,7 @@ details {
     padding-right: 0.5rem;
     margin: 1.5rem;
     width: calc(100% - 4rem);
+    border-radius: 0.25rem;
 }
 
 a {
@@ -182,6 +183,11 @@ input {
     min-width: 12ch;
 }
 
+button {
+    border: 2px solid var(--body-secondary);
+    border-radius: 0.25rem;
+}
+
 form {
     display: flex;
     flex-direction: column;
@@ -211,6 +217,10 @@ form {
     margin-bottom: 0.25rem;
     font-size: 0.8rem;
     text-align: center;
+}
+
+section {
+    width: 100%;
 }
 
 @media (max-aspect-ratio: 1/1) {
