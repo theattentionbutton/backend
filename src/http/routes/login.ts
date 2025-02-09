@@ -1,4 +1,5 @@
 import express from "express";
+import "../../utils/express-session.d.ts";
 import { loginSchema } from "../../schemas/auth.ts";
 import { fromError } from "zod-validation-error";
 import { renderError } from "../../utils/index.ts";
