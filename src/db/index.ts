@@ -5,7 +5,7 @@ export interface Database {
     users: User;
     rooms: Room;
     memberships: Membership;
-    room_requests: RoomRequest;
+    invites: Invite;
 }
 
 export interface User {
@@ -29,10 +29,11 @@ export interface Membership {
     room: string;
 }
 
-export interface RoomRequest {
+export interface Invite {
     from: string;
     to: string;
     created_at: number;
+    id: string;
 }
 
 const dialect = new SqliteDialect({
@@ -76,14 +77,15 @@ await db.schema
     .execute();
 
 await db.schema
-    .createTable("room_requests")
+    .createTable("invites")
     .ifNotExists()
     .addColumn("from", "text", (col) => col.notNull())
     .addColumn("to", "text", (col) => col.notNull())
+    .addColumn("id", "text", (col) => col.notNull().unique())
     .addColumn("created_at", "integer", (col) =>
         col.defaultTo(sql`(unixepoch())`)
     )
-    .addForeignKeyConstraint("fk_room_requests_from", ["from"], "users", ["id"], (cb) =>
+    .addForeignKeyConstraint("fk_invites_from", ["from"], "users", ["id"], (cb) =>
         cb.onDelete("cascade")
     )
     .execute();
