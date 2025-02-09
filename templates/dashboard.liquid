@@ -1,0 +1,63 @@
+{% block extra_head %}
+<link rel="stylesheet" href="/dashboard.css">
+{% endblock %}
+{% layout "base.liquid", heading:heading, title:title %}
+{% block content %}
+<details open>
+    <summary class="invert">Your rooms</summary>
+    <div class="rooms">
+        <div class="room create-room invert">
+            <a href='/create-room' aria-role="button" class="iconoir-plus"></a>
+        </div>
+        <div class="room">
+            <div class="room-title invert">a really long room title</div>
+            <div class="room-meta">
+                <div><span class="room-member-count invert">3</span> members</div>
+                <div><a href="/rooms/{{ uuid  }}">Manage</a></div>
+            </div>
+        </div>
+    </div>
+    <h3>Invites</h3>
+    <div class="invites">
+        <form method=post class=invite>
+            <div class="invite-text"><strong>person@example.com</strong> invited you to <strong>room name</strong>.
+            </div>
+            <div class="invite-actions">
+                <button type="submit" value="accept" name="action" class="action invert">
+                    <i class="iconoir-check action"></i>
+                    <div class="hidden">Accept</div>
+                </button>
+                <button type="submit" value="reject" name="action" class="action invert">
+                    <i class="iconoir-xmark action"></i>
+                    <div class="hidden">Reject</div>
+                </button>
+            </div>
+        </form>
+    </div>
+    </div>
+</details>
+<details open>
+    <summary class="invert">Manage your account</summary>
+    <p>
+        Logged in as <strong>user@example.com</strong>. <a href="/logout">Sign out</a>
+    </p>
+    <h3>Change your password</h3>
+    <form class="change-pw">
+        <div class="form-group">
+            <label for="old-pw">Current password</label>
+            <input type="password" name="old-pw" id="old-pw">
+        </div>
+        <div class="form-group">
+            <label for="new-pw">New password</label>
+            <input type="password" name="new-pw" id="new-pw">
+        </div>
+        <div class="form-group">
+            <label for="confirm-new-pw">Confirm new password</label>
+            <input type="password" name="confirm-new-pw" id="confirm-new-pw">
+        </div>
+        <div class="form-group submit-group">
+            <input type="submit" value="Set">
+        </div>
+    </form>
+</details>
+{% endblock %}
