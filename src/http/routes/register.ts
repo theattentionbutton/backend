@@ -81,7 +81,7 @@ export const verifyEmail: express.Handler = async (req, res) => {
     const user = await checkVerificationEntry(uuid);
     if (!user) return error();
 
-    await confirmUser(user.id);
+    await confirmUser(user.username);
     return res.render("register-result", {
         title: "Registration",
         heading: "Verified successfully!",
