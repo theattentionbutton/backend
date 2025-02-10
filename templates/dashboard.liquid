@@ -32,29 +32,27 @@
 <details open>
     <summary class="invert">Your rooms</summary>
     <div class="rooms">
-        <form class="room create-room">
-            <div class="room-title">Create a room</div>
-            <div class="form-group">
+        <form class="room create-room" method="post" action="/create-room">
+            <div class="room-title invert">Create a room</div>
+            <div>
                 <label class='hidden' for="room-name">Room name</label>
                 <input required type="text" name="room-name" id="room-name" placeholder="Room name...">
             </div>
-            <button type="submit" class="invert" value="Create">
-                <i class="iconoir-plus action"></i>
-                <div class="hidden">Create</div>
-            </button>
+            <button type="submit" class="invert" value="Create"><i class="icon iconoir-plus create-icon"></i>
+                Create</button>
         </form>
         {% for room in rooms %}
         <div class="room">
-            <div class="room-title invert">{{ room.name }}</div>
+            <div class="room-title invert">{{ room.room_name }}</div>
             <div class="room-meta">
                 <div>
-                    {% if room.count > 1 %}
-                    <span class="room-member-count invert">{{ room.count }}</span> members
+                    {% if room.user_count > 1 %}
+                    <span class="room-member-count invert">{{ room.user_count }}</span> members
                     {% else %}
                     <span>Just you. Invite someone!</span>
                     {% endif %}
                 </div>
-                <div><a href="/rooms/{{ room.id }}">Manage</a></div>
+                <div><a href="/rooms/{{ room.room_id }}">Manage</a></div>
             </div>
         </div>
         {% endfor %}
