@@ -12,11 +12,30 @@ export const getUserRooms = async (userId: string) => {
         .execute();
 }
 
+export const getRoomById = async (id) => {
+    const meta = await db
+        .selectFrom('room_meta')
+        .selectAll()
+        .where('id', '=', id) // Filter by the list of room IDs
+        .executeTakeFirst();
+
+    const users = await db
+        .selectFrom('memberships')
+        .select(['user'])
+        .where('room', '=', id)
+        .execute();
+
+    return {
+        meta,
+        users: users.map(i => i.user)
+    };
+}
+
 export const getRoomsById = async (roomIds: string[]) => {
     return await db
-        .selectFrom('room_user_count')
-        .select(['room_id', 'room_name', 'user_count'])
-        .where('room_id', 'in', roomIds) // Filter by the list of room IDs
+        .selectFrom('room_meta')
+        .selectAll()
+        .where('id', 'in', roomIds) // Filter by the list of room IDs
         .execute();
 }
 

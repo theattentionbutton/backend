@@ -6,10 +6,11 @@ export interface Database {
     rooms: Room;
     memberships: Membership;
     invites: Invite;
-    room_user_count: {
-        room_id: string,
-        room_name: string,
-        user_count: number
+    room_meta: {
+        id: string,
+        name: string,
+        count: number,
+        owner: string
     }
 }
 
@@ -93,17 +94,18 @@ await db.schema
     .addColumn("room_id", "text", (col) => col.notNull())
     .addColumn("created_at", "integer", (col) => col.defaultTo(sql`(unixepoch())`))
     .addForeignKeyConstraint("fk_invites_from", ["from"], "users", ["id"], onDeleteCascade)
-    .addForeignKeyConstraint('fk_room_id', ['room_id'], 'rooms', ['id'], onDeleteCascade)
+    .addForeignKeyConstraint('fk_invite_room_id', ['room_id'], 'rooms', ['id'], onDeleteCascade)
     .execute();
 
 await db.schema
-    .createView('room_user_count')
+    .createView('room_meta')
     .ifNotExists()
     .as(db.selectFrom('memberships')
         .innerJoin('rooms', 'rooms.id', 'memberships.room')
         .select([
-            'rooms.id as room_id',
-            'rooms.name as room_name',
+            'rooms.id as id',
+            'rooms.name as name',
+            'rooms.owner as owner',
             sql<number>`count(memberships.user)`.as('user_count')
         ])
         .groupBy('rooms.id')

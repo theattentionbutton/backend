@@ -43,16 +43,18 @@
         </form>
         {% for room in rooms %}
         <div class="room">
-            <div class="room-title invert">{{ room.room_name }}</div>
+            <div class="room-title invert">
+                {% if username == room.owner %}<i class='iconoir-crown'></i>{% endif %}
+                {{ room.name }}</div>
             <div class="room-meta">
                 <div>
                     {% if room.user_count > 1 %}
-                    <span class="room-member-count invert">{{ room.user_count }}</span> members
+                    <span class="room-member-count invert">{{ room.count }}</span> members
                     {% else %}
                     <span>Just you. Invite someone!</span>
                     {% endif %}
                 </div>
-                <div><a href="/rooms/{{ room.room_id }}">Manage</a></div>
+                <div><a href="/rooms/{{ room.id }}">Manage</a></div>
             </div>
         </div>
         {% endfor %}
