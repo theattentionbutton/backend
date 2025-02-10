@@ -8,10 +8,20 @@
     border-bottom: 2px solid var(--body-secondary);
     width: 100%;
     margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
 }
 
 button .icon {
     font-size: 1.5rem;
+}
+
+.room input[type=text] {
+    border-radius: 0;
+    border: none;
+    border-bottom: 2px solid var(--body-secondary);
 }
 
 .room-meta {
@@ -36,7 +46,7 @@ div.rooms {
     border: 2px solid var(--body-secondary);
     display: flex;
     flex-direction: column;
-    height: 8rem;
+    height: 9rem;
     width: 100%;
 }
 
@@ -114,6 +124,14 @@ form.change-pw {
     width: calc(100% - 4rem);
     margin-left: 2rem;
     margin-right: 2rem;
+}
+
+.create-room button {
+    margin-top: 0.5rem;
+}
+
+.room-title .icon {
+    font-size: 1.4rem;
 }
 
 @media screen and (max-aspect-ratio: 1/1) {
