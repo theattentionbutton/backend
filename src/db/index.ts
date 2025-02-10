@@ -93,7 +93,7 @@ await db.schema
     .addColumn("id", "text", (col) => col.notNull().unique())
     .addColumn("room_id", "text", (col) => col.notNull())
     .addColumn("created_at", "integer", (col) => col.defaultTo(sql`(unixepoch())`))
-    .addForeignKeyConstraint("fk_invites_from", ["from"], "users", ["id"], onDeleteCascade)
+    .addForeignKeyConstraint("fk_invites_from", ["from"], "users", ["username"], onDeleteCascade)
     .addForeignKeyConstraint('fk_invite_room_id', ['room_id'], 'rooms', ['id'], onDeleteCascade)
     .execute();
 
