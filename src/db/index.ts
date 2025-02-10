@@ -1,4 +1,4 @@
-import { Kysely, sql, SqliteDialect } from "kysely";
+import { ForeignKeyConstraintBuilder, Kysely, sql, SqliteDialect } from "kysely";
 import SQLite from 'better-sqlite3';
 
 export interface Database {
@@ -29,6 +29,7 @@ export interface Room {
     name: string;
     created_at: number;
     mqtt_topic: string;
+    owner: string;
 }
 
 export interface Membership {
@@ -49,6 +50,7 @@ const dialect = new SqliteDialect({
 });
 
 export const db = new Kysely<Database>({ dialect });
+const onDeleteCascade = (cb: ForeignKeyConstraintBuilder) => cb.onDelete('cascade');
 
 await db.schema.createTable('users')
     .ifNotExists()
@@ -66,9 +68,10 @@ await db.schema
     .addColumn("id", "text", (col) => col.primaryKey())
     .addColumn("secret", "text", (col) => col.notNull().unique())
     .addColumn("name", "text", (col) => col.notNull())
+    .addColumn('owner', 'text', (col) => col.notNull())
     .addColumn("mqtt_topic", "text", (col) => col.notNull().unique())
-    .addColumn("created_at", "integer", (col) => col.defaultTo(sql`(unixepoch())`)
-    )
+    .addColumn("created_at", "integer", (col) => col.defaultTo(sql`(unixepoch())`))
+    .addForeignKeyConstraint('rooms_owner_fk', ['owner'], 'users', ['id'], onDeleteCascade)
     .execute();
 
 await db.schema
@@ -77,12 +80,8 @@ await db.schema
     .addColumn("user", "text", (col) => col.notNull())
     .addColumn("room", "text", (col) => col.notNull())
     .addPrimaryKeyConstraint("pk_memberships", ["user", "room"])
-    .addForeignKeyConstraint("fk_memberships_user", ["user"], "users", ["id"], (cb) =>
-        cb.onDelete("cascade")
-    )
-    .addForeignKeyConstraint("fk_memberships_room", ["room"], "rooms", ["id"], (cb) =>
-        cb.onDelete("cascade")
-    )
+    .addForeignKeyConstraint("fk_memberships_user", ["user"], "users", ["id"], onDeleteCascade)
+    .addForeignKeyConstraint("fk_memberships_room", ["room"], "rooms", ["id"], onDeleteCascade)
     .execute();
 
 await db.schema
@@ -93,12 +92,8 @@ await db.schema
     .addColumn("id", "text", (col) => col.notNull().unique())
     .addColumn("room_id", "text", (col) => col.notNull())
     .addColumn("created_at", "integer", (col) => col.defaultTo(sql`(unixepoch())`))
-    .addForeignKeyConstraint("fk_invites_from", ["from"], "users", ["id"], (cb) =>
-        cb.onDelete("cascade")
-    )
-    .addForeignKeyConstraint('fk_room_id', ['room_id'], 'rooms', ['id'], (cb) =>
-        cb.onDelete('cascade')
-    )
+    .addForeignKeyConstraint("fk_invites_from", ["from"], "users", ["id"], onDeleteCascade)
+    .addForeignKeyConstraint('fk_room_id', ['room_id'], 'rooms', ['id'], onDeleteCascade)
     .execute();
 
 await db.schema
