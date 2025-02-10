@@ -98,6 +98,8 @@ export const createApp = () => {
     app.get('/account', requiresAuth, account.get);
     app.get('/logout', requiresAuth, account.logout);
     app.post('/change-password', limiter, requiresAuth, account.updatePw);
+
+    app.get('/rooms/:uuid', requiresAuth, rooms.manage);
     app.post('/create-room', limiter, requiresAuth, rooms.create);
 
     app.use(errors.catchall);
