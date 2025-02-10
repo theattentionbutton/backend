@@ -55,3 +55,19 @@ details {
 h3 {
     margin: 0.5rem;
 }
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+ul {
+    margin: 0;
+}
+
+@media screen and (max-aspect-ratio: 1/1) {
+    details {
+        width: unset;
+    }
+}
