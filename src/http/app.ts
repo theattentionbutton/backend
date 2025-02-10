@@ -73,7 +73,7 @@ const makeSession = () => {
 
 const elideWhenAuthed = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (!req.session.user) return next();
-    return res.redirect('/account');
+    return res.redirect('/dashboard');
 }
 
 const requiresAuth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -105,13 +105,15 @@ export const createApp = () => {
     app.post("/register", limiter2pm, register.requestRegistration);
     app.get('/register/verify/:uuid', limiter6pm, register.verifyEmail);
 
-    app.get('/account', requiresAuth, account.get);
+    app.get('/dashboard', requiresAuth, account.get);
     app.get('/logout', requiresAuth, account.logout);
     app.post('/change-password', limiter6pm, requiresAuth, account.updatePw);
 
     app.get('/rooms/:uuid', requiresAuth, rooms.manage);
     app.post('/rooms/invite', limiter2pm, requiresAuth, rooms.inviteUser);
+    app.post('/rooms/handle-invite', limiter6pm, requiresAuth, rooms.handleInvite);
     app.post('/rooms/create', limiter6pm, requiresAuth, rooms.create);
+    app.post('/rooms/delete', limiter6pm, requiresAuth, rooms.del);
 
     app.use(errors.catchall);
     app.use(errors.renderer);
