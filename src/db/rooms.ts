@@ -50,7 +50,7 @@ export const getRoomsById = async (roomIds: string[]) => {
 
 export const getUserInvites = async (username: string) => {
     return await db.selectFrom('invites')
-        .select(['from', 'id', 'created_at', 'room_id'])
+        .selectAll()
         .where('to', '=', username)
         .execute();
 }
@@ -61,6 +61,13 @@ export const getRoomInvites = async (id: string) => {
         .where('room_id', '=', id)
         .orderBy('created_at desc')
         .execute();
+}
+
+export const getInviteById = async (id: string) => {
+    return await db.selectFrom('invites')
+        .selectAll()
+        .where('id', '=', id)
+        .executeTakeFirst();
 }
 
 export const createInvite = async (from: string, to: string, room: string) => {
@@ -83,10 +90,14 @@ export const acceptInvite = async (id: string) => {
             .returningAll()
             .executeTakeFirst() as Invite;
 
-        await trx.insertInto('memberships').values({
-            room: invite.room_id,
-            user: invite.to
-        }).execute();
+        const user = await trx
+            .selectFrom('users')
+            .select('id')
+            .where('username', '=', invite.to)
+            .executeTakeFirst()
+            .then(itm => itm.id);
+
+        await trx.insertInto('memberships').values({ user, room: invite.room_id }).execute();
     })
 }
 
