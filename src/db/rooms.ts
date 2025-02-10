@@ -8,14 +8,14 @@ export const getUserRooms = async (userId: string) => {
         .innerJoin('memberships', 'memberships.room', 'rooms.id')
         .where('memberships.user', '=', userId)
         .select('rooms.id')
-        .orderBy('rooms.created_at', 'asc')
+        .orderBy('rooms.created_at', 'desc')
         .execute();
 }
 
 export const getUserPublicInfo = async (ids: string[]) => {
     return await db
         .selectFrom('users')
-        .select(['username', 'name'])
+        .select(['username as email', 'name'])
         .where('id', 'in', ids)
         .execute();
 }
@@ -55,6 +55,22 @@ export const getUserInvites = async (username: string) => {
         .execute();
 }
 
+export const getRoomInvites = async (id: string) => {
+    return await db.selectFrom('invites')
+        .select(['from', 'to', 'id', 'created_at', 'room_id'])
+        .where('room_id', '=', id)
+        .orderBy('created_at desc')
+        .execute();
+}
+
+export const createInvite = async (from: string, to: string, room: string) => {
+    return await db.insertInto('invites')
+        .columns(['from', 'to', 'room_id', 'id'])
+        .values({ from, to, room_id: room, id: crypto.randomUUID() })
+        .returningAll()
+        .executeTakeFirst();
+}
+
 export const rejectInvite = async (invite: string) => {
     return await db.deleteFrom('invites').where('id', '=', invite).execute();
 }
@@ -76,6 +92,10 @@ export const acceptInvite = async (id: string) => {
 
 export const createRoom = async (r: Omit<Room, "created_at">, k: Kysely<Database> = db) => {
     return await k.insertInto('rooms').values(r).execute();
+}
+
+export const deleteRoom = async (room: string) => {
+    return await db.deleteFrom('rooms').where('id', '=', room).execute();
 }
 
 export const addUserToRoom = async (user: string, room: string, k: Kysely<Database> = db) => {
