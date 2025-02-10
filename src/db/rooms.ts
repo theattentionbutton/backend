@@ -97,7 +97,7 @@ export const acceptInvite = async (id: string) => {
             .executeTakeFirst()
             .then(itm => itm.id);
 
-        await addUserToRoom(userId, invite.room_id);
+        await addUserToRoom(userId, invite.room_id, trx);
     })
 }
 
