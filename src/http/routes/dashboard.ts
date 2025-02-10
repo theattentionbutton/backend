@@ -1,5 +1,5 @@
 import express from "express";
-import "../../utils/express-session.js";
+import "../../utils/express-session.d.ts";
 import { getRoomsById, getUserInvites, getUserRooms } from "../../db/rooms.ts";
 import { updatePwSchema } from "../../schemas/auth.ts";
 import { fromError } from "zod-validation-error";
@@ -14,11 +14,14 @@ export const get: express.Handler = async (req, res, next) => {
     const invitedRooms = invites.map(i => i.room_id);
     const rooms = await getRoomsById(userRooms.map(itm => itm.id).concat(invitedRooms));
     const roomMap = Object.groupBy(rooms, (itm) => itm.id);
+    const filtered = rooms
+        .filter(room => !invitedRooms.includes(room.id))
+        .map(room => ({ ...room, isOwner: room.owner === user.id }));
 
     return res.render('dashboard', {
         title: "Dashboard",
         username: user.username,
-        rooms: rooms.filter(room => !invitedRooms.includes(room.id)),
+        rooms: filtered,
         invites: invites.map(invite => ({
             id: invite.id,
             from: invite.from,
