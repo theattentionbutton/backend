@@ -1,4 +1,6 @@
 import express from "express";
+import { fromError } from "zod-validation-error";
+import { z } from "zod";
 
 export const die = (code: number, ...args: any[]): never => {
     console.log(...args);
@@ -54,5 +56,24 @@ const errorOpts = (opts: RenderErrorOpts): typeof RENDER_ERROR_OPTS => {
 export const renderError = (res: express.Response, opts: RenderErrorOpts, code = 400) => {
     return res.status(code).render("error", errorOpts(opts));
 }
+
+
+export const parseBody = async <Z extends z.ZodTypeAny = z.ZodNever>(
+    schema: Z,
+    res: express.Response,
+    body: unknown
+) => {
+    const parsed = schema.safeParse(body);
+    if (!parsed.success) {
+        renderError(res, {
+            details: fromError(parsed.error).toString(),
+            name: "Validation error",
+        })
+        return null;
+    }
+
+    return parsed.data as z.infer<Z>;
+};
+
 
 export const UUID_REGEX = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
