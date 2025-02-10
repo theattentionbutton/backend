@@ -1,0 +1,55 @@
+{% layout "base.liquid", heading:heading, title:title %}
+{% block head_extras %}
+<link rel="stylesheet" href="/room.css">
+{% endblock %}
+{% block content %}
+
+<h3>Members</h3>
+<section class="members">
+    <details open>
+        <summary class="invert">Invite a new member</summary>
+        <form method="post" ction="/rooms/invite" class="invite-member">
+            <input type="hidden" name="id" value="{{ room.meta.id }}">
+            <div class="form-group">
+                <label for="invite-email">Their e-mail</label>
+                <input type="email" name="invite-email" id="invite-email">
+            </div>
+            <div class="submit-group form-group">
+                <input type="submit" value="Invite">
+            </div>
+        </form>
+    </details>
+
+    {% if room.users.length <= 1 %} <p>No other people in this room yet. Why not invite someone?</p>
+        {% else %}
+        <details>
+            <summary class="invert">Current members</summary>
+            <ul>
+                {% for user in room.users %}
+                {% unless user.email == username %}
+                <li class="member">
+                    <span class="member-name">{{ user.name }}</span>
+                    {% if isOwner %} ({{ user.email }}) {% endif %}
+                    {% if isOwner %}<form method="post" action="/remove-user" class="remove-user">
+                        <button type="submit">Remove</button>
+                    </form> {% endif %}
+                </li>
+                {% endunless %}
+                {% endfor %}
+            </ul>
+        </details>
+        {% endif %}
+</section>
+
+{% if isOwner %}
+<h3>Danger Zone</h3>
+<form method="post" action="/rooms/delete" class="delete-room">
+    <input type="hidden" name="id" value="{{ room.meta.id }}">
+    <div>
+        You are the owner of this room.
+        <input type="submit" value="Delete room">
+    </div>
+</form>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,53 @@
+form.invite-member {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+form.delete-room {
+    width: 100%;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+form.delete-room input[type=submit] {
+    padding: 0;
+    margin: 0;
+    border: none;
+    text-decoration: underline;
+    font-weight: bold;
+    min-width: 0;
+    border-radius: 0;
+    background-color: transparent;
+}
+
+.member-name {
+    font-weight: bold;
+}
+
+ul {
+    padding-inline-start: 0;
+    padding-left: 1rem;
+}
+
+li {
+    margin: 0.5rem;
+}
+
+form.remove-user {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+form.remove-user button {
+    display: inline-flex;
+    background-color: transparent;
+    padding: 0.5rem;
+}
+
+details {
+    width: 100%;
+    margin-top: 1rem;
+}
