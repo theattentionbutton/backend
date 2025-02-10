@@ -12,7 +12,15 @@ export const getUserRooms = async (userId: string) => {
         .execute();
 }
 
-export const getRoomById = async (id) => {
+export const getUserPublicInfo = async (ids: string[]) => {
+    return await db
+        .selectFrom('users')
+        .select(['username', 'name'])
+        .where('id', 'in', ids)
+        .execute();
+}
+
+export const getRoomById = async (id: string) => {
     const meta = await db
         .selectFrom('room_meta')
         .selectAll()
@@ -23,11 +31,12 @@ export const getRoomById = async (id) => {
         .selectFrom('memberships')
         .select(['user'])
         .where('room', '=', id)
-        .execute();
+        .execute()
+        .then(wrapped => wrapped.map(i => i.user));
 
     return {
         meta,
-        users: users.map(i => i.user)
+        users: await getUserPublicInfo(users)
     };
 }
 
