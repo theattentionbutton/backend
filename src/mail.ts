@@ -48,7 +48,7 @@ const MAIL_FROM = {
 interface SendEmailOpts {
     to: string,
     subject: string,
-    type: 'verify-email',
+    type: 'verify-email' | 'room-invite',
     ctx: Record<string, any>,
 }
 export const sendEmail = async (opts: SendEmailOpts) => {
