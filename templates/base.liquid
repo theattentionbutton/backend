@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Attention Button{% if title %} - {{ title }}{% endif %}</title>
+    <title>The Attention Button{% if title %} - {{ title | escape }}{% endif %}</title>
     {% block head %}
     {% endblock %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,9 +36,9 @@
     </header>
 
     {%if heading %}
-    <h2>{{ heading }}</h2>
+    <h2>{{ heading | escape }}</h2>
     {% elsif title %}
-    <h2>{{ title }}</h2>
+    <h2>{{ title | escape }}</h2>
     {% endif %}
 
     {% block content %}
