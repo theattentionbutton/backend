@@ -2,7 +2,7 @@ import express from "express";
 import "../../utils/express-session.d.ts";
 import { loginSchema } from "../../schemas/auth.ts";
 import { fromError } from "zod-validation-error";
-import { renderError } from "../../utils/index.ts";
+import { parseBody, renderError } from "../../utils/index.ts";
 import { getUser } from "../../db/auth.ts";
 import { verify } from "argon2";
 
@@ -11,14 +11,9 @@ export const get: express.Handler = (req, res) => {
 }
 
 export const post: express.Handler = async (req, res) => {
-    const parseResult = await loginSchema.safeParseAsync(req.body);
-    if (!parseResult.success) {
-        return renderError(res, {
-            details: fromError(parseResult.error).toString(),
-            name: "Validation error",
-        })
-    }
-    const body = parseResult.data;
+    const body = await parseBody(loginSchema, res, req.body);
+    if (!body) return;
+
     const user = await getUser(body.authEmail);
     if (!user) {
         return renderError(res, {
@@ -43,6 +38,6 @@ export const post: express.Handler = async (req, res) => {
     else {
         req.session.user = user;
         req.session.save();
-        return res.redirect('/account');
+        return res.redirect('/dashboard');
     }
 }

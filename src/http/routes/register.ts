@@ -1,7 +1,7 @@
 import express from "express";
 import { verify } from "hcaptcha";
 import { registerSchema } from "../../schemas/auth.ts";
-import { renderError, UUID_REGEX } from "../../utils/index.ts";
+import { parseBody, renderError, UUID_REGEX } from "../../utils/index.ts";
 import { config } from "../../utils/config.ts";
 import { checkVerificationEntry, confirmUser, createUser, deleteUnconfirmedUsers, getUser } from "../../db/auth.ts";
 import escape from 'escape-html';
@@ -14,14 +14,8 @@ export const get: express.Handler = (_, res) => {
 }
 
 export const requestRegistration: express.Handler = async (req, res, next) => {
-    const parseResult = await registerSchema.safeParseAsync(req.body);
-    if (!parseResult.success) {
-        return renderError(res, {
-            details: fromError(parseResult.error).toString(),
-            name: "Validation error",
-        })
-    }
-    const body = parseResult.data;
+    const body = await parseBody(registerSchema, res, req.body);
+    if (!body) return;
 
     const verifyResult = await verify(config.captchaSecret, body.hcaptchaToken);
     if (!verifyResult.success) {
