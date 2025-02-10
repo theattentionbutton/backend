@@ -1,5 +1,5 @@
 import express from "express";
-import "../../utils/express-session.d.ts";
+import "../../utils/express-session.js";
 import { getRoomsById, getUserInvites, getUserRooms } from "../../db/rooms.ts";
 import { updatePwSchema } from "../../schemas/auth.ts";
 import { fromError } from "zod-validation-error";

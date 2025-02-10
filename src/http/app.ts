@@ -9,7 +9,7 @@ import * as errors from "./routes/errors.ts";
 import * as index from "./routes/index.ts";
 import * as store from "./routes/store.ts";
 import * as register from "./routes/register.ts";
-import * as account from "./routes/account.ts";
+import * as account from "./routes/dashboard.ts";
 import * as login from "./routes/login.ts";
 import * as legalese from "./routes/legalese.ts";
 import * as rooms from "./routes/rooms.ts";
