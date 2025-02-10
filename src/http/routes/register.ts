@@ -45,7 +45,6 @@ export const requestRegistration: express.Handler = async (req, res, next) => {
 
     const created = await createUser({
         confirmed: 0,
-        created_at: Date.now(),
         id: crypto.randomUUID(),
         name: body.registerName,
         password: await argon2.hash(body.authPassword),
