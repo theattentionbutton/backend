@@ -12,6 +12,7 @@ import * as register from "./routes/register.ts";
 import * as account from "./routes/account.ts";
 import * as login from "./routes/login.ts";
 import * as legalese from "./routes/legalese.ts";
+import * as rooms from "./routes/rooms.ts";
 import { config } from "../utils/config.ts";
 import { timeMs } from "../utils/time.ts";
 import { SqliteStore } from "../utils/sqlite3-session-store.ts";
@@ -96,6 +97,8 @@ export const createApp = () => {
 
     app.get('/account', requiresAuth, account.get);
     app.get('/logout', requiresAuth, account.logout);
+    app.post('/change-password', limiter, requiresAuth, account.updatePw);
+    app.post('/create-room', limiter, requiresAuth, rooms.create);
 
     app.use(errors.catchall);
     app.use(errors.renderer);
