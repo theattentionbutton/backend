@@ -114,6 +114,7 @@ export const createApp = () => {
     app.post('/rooms/handle-invite', limiter6pm, requiresAuth, rooms.handleInvite);
     app.post('/rooms/create', limiter6pm, requiresAuth, rooms.create);
     app.post('/rooms/delete', limiter6pm, requiresAuth, rooms.del);
+    app.post('/rooms/remove', limiter6pm, requiresAuth, rooms.removeUser);
 
     app.use(errors.catchall);
     app.use(errors.renderer);

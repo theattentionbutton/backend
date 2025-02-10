@@ -34,7 +34,7 @@
                     <span class="member-name">{{ user.name }}</span>
                     {% if isOwner %} ({{ user.email }}) {% endif %}
                     {% if isOwner %}
-                    <form method="post" action="/remove-user" class="remove-user">
+                    <form method="post" action="/rooms/remove" class="remove-user">
                         <input type="hidden" name="room_id" value="{{ room.meta.id }}">
                         <input type="hidden" name="user_id" value="{{ user.id }}">
                         <button type="submit">Remove</button>
