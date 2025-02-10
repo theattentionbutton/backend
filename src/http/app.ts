@@ -17,17 +17,15 @@ import { config } from "../utils/config.ts";
 import { timeMs } from "../utils/time.ts";
 import { SqliteStore } from "../utils/sqlite3-session-store.ts";
 import rateLimit from "express-rate-limit";
+import { renderError } from "../utils/index.ts";
 
 const makeCors = () => cors({
     origin: "https://theattentionbutton.in",
     optionsSuccessStatus: 200
 });
 
-const limiter = rateLimit({
-    windowMs: timeMs({ m: 15 }),
-    limit: 100,
-
-    keyGenerator: (req) => {
+const makeLimiter = (pm: number) => rateLimit({
+    keyGenerator: (req: express.Request) => {
         const firstPart = (s: string, sep: string) => s.split(sep)[0].trim()
         const xff = req.header('X-Forwarded-For');
         const realIP = req.header('X-Real-IP');
@@ -35,8 +33,20 @@ const limiter = rateLimit({
         const clientIP = xff ? firstPart(xff, ',') : realIP;
         const path = firstPart(req.originalUrl, '?');
         return `${clientIP}-${path}`;
-    }
+    },
+    handler: (req, res) => {
+        return renderError(res, {
+            code: 429,
+            name: "Too Many Requests",
+            details: "You have made too many requests to the specified resource. Please try again in some time."
+        }, 429);
+    },
+    windowMs: timeMs({ m: 1 }),
+    limit: pm,
 })
+
+const limiter6pm = makeLimiter(6);
+const limiter2pm = makeLimiter(2);
 
 const makeSession = () => {
     const db = new sqlite("sessions.db");
@@ -92,15 +102,16 @@ export const createApp = () => {
     app.get('/login', elideWhenAuthed, login.get);
     app.post('/login', login.post);
 
-    app.post("/register", limiter, register.requestRegistration);
-    app.get('/register/verify/:uuid', limiter, register.verifyEmail);
+    app.post("/register", limiter2pm, register.requestRegistration);
+    app.get('/register/verify/:uuid', limiter6pm, register.verifyEmail);
 
     app.get('/account', requiresAuth, account.get);
     app.get('/logout', requiresAuth, account.logout);
-    app.post('/change-password', limiter, requiresAuth, account.updatePw);
+    app.post('/change-password', limiter6pm, requiresAuth, account.updatePw);
 
     app.get('/rooms/:uuid', requiresAuth, rooms.manage);
-    app.post('/create-room', limiter, requiresAuth, rooms.create);
+    app.post('/rooms/invite', limiter2pm, requiresAuth, rooms.inviteUser);
+    app.post('/rooms/create', limiter6pm, requiresAuth, rooms.create);
 
     app.use(errors.catchall);
     app.use(errors.renderer);
