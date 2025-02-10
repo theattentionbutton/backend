@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Invitation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 2px solid pink;
+        }
+
+        .t-a-b-style {
+            background-color: pink;
+            color: #303030;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .button {
+            margin: 40px 0;
+        }
+
+        .button a {
+            text-decoration: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            padding: 20px;
+        }
+
+        p {
+            text-align: left;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .footer p {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header t-a-b-style">
+            <h1>You've Been Invited!</h1>
+        </div>
+        <div class="content">
+            <p>Hi there,</p>
+            <p><strong>{{ sender }}</strong> has invited you to join the room <strong>{{ room }}</strong> on <strong>The
+                    Attention Button</strong>!</p>
+            <p>To accept the invitation and pair your Attention Button, please visit the link below:</p>
+            <div class="button">
+                <a href="https://theattentionbutton.in/dashboard" target="_blank" class="t-a-b-style">Join Room</a>
+            </div>
+            <p>
+                If the above button does not work for you, please copy and paste the following link into your browser:
+            </p>
+            <pre><code>https://theattentionbutton.in/dashboard</code></pre>
+            <p>If you didn't expect this invitation, you can safely ignore this email.</p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2025 The Attention Button. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+
+</html>
