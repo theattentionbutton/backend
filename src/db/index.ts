@@ -28,6 +28,7 @@ export interface Room {
     secret: string;
     name: string;
     created_at: number;
+    mqtt_topic: string;
 }
 
 export interface Membership {
@@ -65,6 +66,7 @@ await db.schema
     .addColumn("id", "text", (col) => col.primaryKey())
     .addColumn("secret", "text", (col) => col.notNull().unique())
     .addColumn("name", "text", (col) => col.notNull())
+    .addColumn("mqtt_topic", "text", (col) => col.notNull().unique())
     .addColumn("created_at", "integer", (col) => col.defaultTo(sql`(unixepoch())`)
     )
     .execute();
