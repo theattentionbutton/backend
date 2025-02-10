@@ -5,6 +5,17 @@ export const die = (code: number, ...args: any[]): never => {
     process.exit(code);
 }
 
+export const sha256 = async (input: string) => {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+
+    // Convert buffer to hex string
+    return Array.from(new Uint8Array(hashBuffer))
+        .map(byte => byte.toString(16).padStart(2, '0'))
+        .join('');
+}
+
 export const fatal = (...args: any[]) => die(1, "fatal:", ...args);
 
 export const getHttpDescription = (code: number) => {
