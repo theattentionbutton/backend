@@ -35,7 +35,7 @@ export const checkVerificationEntry = async (code: string) => {
 }
 
 export const confirmUser = async (username: string) => {
-    return await db.updateTable('users').set({ confirmed: 1 }).where('id', '=', username).execute();
+    return await db.updateTable('users').set({ confirmed: 1 }).where('username', '=', username).execute();
 }
 
 export const updatePassword = async (username: string, newPass: string) => {
