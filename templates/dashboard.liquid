@@ -44,7 +44,8 @@
         {% for room in rooms %}
         <div class="room">
             <div class="room-title invert">
-                {% if username == room.owner %}<i class='iconoir-crown'></i>{% endif %}
+                {% if room.isOwner %}<i class='icon iconoir-crown' title="You are the owner of this room."></i>{% endif
+                %}
                 {{ room.name }}</div>
             <div class="room-meta">
                 <div>
