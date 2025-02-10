@@ -62,12 +62,12 @@ const makeSession = () => {
 }
 
 const elideWhenAuthed = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    if (!req.session.username) return next();
+    if (!req.session.user) return next();
     return res.redirect('/account');
 }
 
 const requiresAuth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    if (req.session.username) return next();
+    if (req.session.user) return next();
     return res.redirect('/login');
 }
 

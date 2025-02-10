@@ -41,7 +41,7 @@ export const post: express.Handler = async (req, res) => {
         });
     }
     else {
-        req.session.username = user.username;
+        req.session.user = user;
         req.session.save();
         return res.redirect('/account');
     }

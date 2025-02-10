@@ -3,7 +3,6 @@ import { renderError, sha256, UUID_REGEX } from '../../utils/index.ts';
 import { generate } from "random-words";
 import { addUserToRoom, createRoom, getRoomById } from '../../db/rooms.ts';
 import { db } from '../../db/index.ts';
-import { getUser } from '../../db/auth.ts';
 import { hash } from 'argon2';
 
 export const create: express.Handler = async (req, res) => {
@@ -11,7 +10,7 @@ export const create: express.Handler = async (req, res) => {
     if (!name) return renderError(res, { name: "Bad Request", details: "Room name not supplied." });
     const secret = generate({ exactly: 4, maxLength: 11, minLength: 5, join: ' ' });
 
-    const user = await getUser(req.session.username);
+    const user = req.session.user!;
     const r = {
         id: crypto.randomUUID(),
         mqtt_topic: await sha256(secret),
