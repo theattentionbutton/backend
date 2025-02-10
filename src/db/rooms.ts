@@ -15,7 +15,7 @@ export const getUserRooms = async (userId: string) => {
 export const getUserPublicInfo = async (ids: string[]) => {
     return await db
         .selectFrom('users')
-        .select(['username as email', 'name'])
+        .select(['username as email', 'name', 'id'])
         .where('id', 'in', ids)
         .execute();
 }
@@ -90,14 +90,14 @@ export const acceptInvite = async (id: string) => {
             .returningAll()
             .executeTakeFirst() as Invite;
 
-        const user = await trx
+        const userId = await trx
             .selectFrom('users')
             .select('id')
             .where('username', '=', invite.to)
             .executeTakeFirst()
             .then(itm => itm.id);
 
-        await trx.insertInto('memberships').values({ user, room: invite.room_id }).execute();
+        await addUserToRoom(userId, invite.room_id);
     })
 }
 
@@ -110,9 +110,12 @@ export const deleteRoom = async (room: string) => {
 }
 
 export const addUserToRoom = async (user: string, room: string, k: Kysely<Database> = db) => {
-    const query = k.insertInto('memberships').values({ user, room });
-    console.log(user, room);
-    console.log(query.compile().sql);
-    return await query
+    return await k.insertInto('memberships').values({ user, room }).execute();
+}
+
+export const removeUserFromRoom = async (user: string, room: string) => {
+    return await db.deleteFrom('memberships')
+        .where('room', '=', room)
+        .where('user', '=', user)
         .execute();
 }
