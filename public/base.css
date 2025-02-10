@@ -70,7 +70,7 @@ body>*:not(header):not(footer) {
 }
 
 html {
-    background-color: rgb(255, 207, 198);
+    background-color: #ffcac6;
     width: calc(100% - var(--root-padding)*2);
     min-height: calc(100% - var(--root-padding)*2);
     margin: 0;
@@ -132,6 +132,11 @@ summary {
     padding: 0.5rem;
     width: 100%;
     transform: translateX(-0.5rem);
+}
+
+summary.invert {
+    background-color: #ffcac6;
+    color: var(--body-secondary);
 }
 
 details {
