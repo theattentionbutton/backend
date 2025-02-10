@@ -6,9 +6,10 @@
 
 <h3>Members</h3>
 <section class="members">
+    {% if isOwner %}
     <details open>
         <summary class="invert">Invite a new member</summary>
-        <form method="post" ction="/rooms/invite" class="invite-member">
+        <form method="post" action="/rooms/invite" class="invite-member">
             <input type="hidden" name="id" value="{{ room.meta.id }}">
             <div class="form-group">
                 <label for="invite-email">Their e-mail</label>
@@ -19,37 +20,66 @@
             </div>
         </form>
     </details>
+    {% endif %}
 
     {% if room.users.length <= 1 %} <p>No other people in this room yet. Why not invite someone?</p>
         {% else %}
         <details>
             <summary class="invert">Current members</summary>
             <ul>
+                <li>You</li>
                 {% for user in room.users %}
                 {% unless user.email == username %}
                 <li class="member">
                     <span class="member-name">{{ user.name }}</span>
                     {% if isOwner %} ({{ user.email }}) {% endif %}
-                    {% if isOwner %}<form method="post" action="/remove-user" class="remove-user">
+                    {% if isOwner %}
+                    <form method="post" action="/remove-user" class="remove-user">
+                        <input type="hidden" name="room_id" value="{{ room.meta.id }}">
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
                         <button type="submit">Remove</button>
-                    </form> {% endif %}
+                    </form>
+                    {% endif %}
                 </li>
                 {% endunless %}
                 {% endfor %}
             </ul>
         </details>
         {% endif %}
+
+        {% if pendingInvites.length != 0 %}
+        <details open>
+            <summary class="invert">Pending invites</summary>
+            <ul>
+                {% for invite in pendingInvites %}
+                <li>{{ invite.to }}</li>
+                {% endfor %}
+            </ul>
+        </details>
+        {% endif %}
 </section>
 
-{% if isOwner %}
 <h3>Danger Zone</h3>
-<form method="post" action="/rooms/delete" class="delete-room">
-    <input type="hidden" name="id" value="{{ room.meta.id }}">
-    <div>
-        You are the owner of this room.
-        <input type="submit" value="Delete room">
-    </div>
-</form>
-{% endif %}
+<ul>
+    {% if isOwner %}
+    <li>
+        <form method="post" action="/rooms/delete" class="delete-room">
+            <input type="hidden" name="id" value="{{ room.meta.id }}">
+            <div>
+                You are the owner of this room.
+                <input type="submit" value="Delete room">
+            </div>
+        </form>
+    </li>
+    {% else %}
+    <li>
+        <form method="post" action="/rooms/remove" class="delete-room">
+            <input type="hidden" name="room_id" value="{{ room.meta.id }}">
+            <input type="hidden" name="user_id" value="{{ user_id }}">
+            <input type="submit" value="Leave this room">
+        </form>
+    </li>
+    {% endif %}
+</ul>
 
 {% endblock %}
