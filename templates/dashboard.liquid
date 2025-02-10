@@ -32,7 +32,7 @@
 <details open>
     <summary class="invert">Your rooms</summary>
     <div class="rooms">
-        <form class="room create-room" method="post" action="/create-room">
+        <form class="room create-room" method="post" action="/rooms/create">
             <div class="room-title invert">Create a room</div>
             <div>
                 <label class='hidden' for="room-name">Room name</label>
@@ -60,13 +60,14 @@
         </div>
         {% endfor %}
     </div>
-    {% if invites.size > 0 %}
+    {% if invites.length > 0 %}
     <h3>Invites</h3>
     <div class="invites">
         {% for invite in invites %}
-        <form method="post" action="/invites/{{ invite.id }}">
+        <form method="post" class="invite" action="/rooms/handle-invite">
+            <input type="hidden" name="id" value="{{ invite.id }}">
             <div class="invite-text">
-                <strong>{{ invite.from }}</strong> invited you to <strong>{{ invite.roomName }}</strong>.
+                <strong>{{ invite.from }}</strong> invited you to <strong>{{ invite.room_name }}</strong>.
             </div>
 
             <div class="invite-actions">
