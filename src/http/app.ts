@@ -26,11 +26,11 @@ const makeCors = () => cors({
 
 const makeLimiter = (pm: number) => rateLimit({
     keyGenerator: (req: express.Request) => {
-        const firstPart = (s: string, sep: string) => s.split(sep)[0].trim()
+        const firstPart = (s: string, sep: string, n = 0) => s.split(sep).at(n).trim()
         const xff = req.header('X-Forwarded-For');
         const realIP = req.header('X-Real-IP');
         // Use first IP in XFF or fallback to X-Real-IP
-        const clientIP = xff ? firstPart(xff, ',') : realIP;
+        const clientIP = xff ? firstPart(xff, ',', -1) : realIP;
         const path = firstPart(req.originalUrl, '?');
         return `${clientIP}-${path}`;
     },
@@ -92,6 +92,7 @@ export const createApp = () => {
     app.use(express.urlencoded({ extended: true }));
     app.use(makeSession());
     app.use(makeCors());
+    app.use(req => console.log(req.header('X-Forwarded-For')));
 
     app.get("/", index.get);
     app.get("/store", store.get);
