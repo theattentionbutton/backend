@@ -29,13 +29,17 @@ export const createMqtt = () => {
     };
 
     const isClientAllowed = async (client: Aedes.Client, topic: string) => {
+        const matched = topic.match(/attnbtn\/messages\/([0-9a-f]{64})/);
+        if (!matched || !matched[1]) {
+            return ["No such room", null];
+        }
+        const parsedTopic = matched[1];
         if (!client.id || !userClients.has(client.id)) ["Not authenticated", null];
         const user = userClients.get(client.id);
         const rooms = await getUserRooms(user.id);
-        if (rooms.some(itm => itm.mqtt_topic === topic)) {
+        if (rooms.some(itm => itm.mqtt_topic === parsedTopic)) {
             return [null, true];
         }
-        return ["No such room", null];
     }
 
     mqtt.authorizeSubscribe = async (client, sub, callback) => {
