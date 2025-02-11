@@ -1,14 +1,14 @@
 {
   "hostname": "0.0.0.0",
-  "httpPort": 3000,
-  "smtpHost": "smtp.example.com",
+  "httpPort": 8000,
+  "smtpHost": "your.smtp.server",
   "smtpPort": 587,
-  "smtpUsername": "smtp",
+  "smtpUsername": "your-username",
   "smtpPassword": "hunter2",
-  "storeUrl": "https://example.com",
+  "smtpSecure": false,
+  "storeUrl": "https://theattentionbutton.in/store",
   "mqttPort": 1883,
-  "mqttTls": false,
-  "keyPath": "./certs/key.pem",
-  "certPath": "./certs/cert.pem",
-  "caPath": "./certs/ca.pem"
+  "secrets": ["your-cookie-secret"],
+  "captchaSecret": "your-hcaptcha-secret",
+  "mqttTls": false
 }
