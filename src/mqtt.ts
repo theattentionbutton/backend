@@ -3,7 +3,7 @@ import tls from "tls";
 import net from "net";
 import { config } from './utils/config.ts';
 import { getUser } from "./db/auth.ts";
-import { User } from "./db/index.ts";
+import type { User } from "./db/index.ts";
 import { getUserRooms } from "./db/rooms.ts";
 import fs from "fs";
 import { z } from "zod";
