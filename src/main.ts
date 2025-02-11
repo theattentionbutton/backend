@@ -4,6 +4,8 @@ import { createMqtt } from './mqtt.ts';
 
 const app = createApp();
 
+if (process.env.TAB_ENV !== 'dev') app.set('trust proxy', 1);
+
 app.listen(config.httpPort, config.hostname, () => {
     console.log(`HTTP listening on http://${config.hostname}:${config.httpPort}`);
 });
