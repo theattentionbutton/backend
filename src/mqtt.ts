@@ -1,0 +1,108 @@
+import Aedes from "aedes";
+import tls from "tls";
+import net from "net";
+import { config } from './utils/config.ts';
+import { getUser } from "./db/auth.ts";
+import { User } from "./db/index.ts";
+import { getUserRooms } from "./db/rooms.ts";
+import fs from "fs";
+import { z } from "zod";
+import { fromError } from "zod-validation-error";
+
+export const createMqtt = () => {
+    const mqtt = Aedes.createBroker();
+
+    const userClients = new Map<string, User>();
+    const decoder = new TextDecoder('UTF-8');
+    mqtt.authenticate = async (client, username, password, callback) => {
+        if (!username || !password) return callback(null, false);
+
+        const user = await getUser(username);
+        if (!user) return callback(null, false);
+        const isUserValid = await getUserRooms(user.id)
+            .then(rooms => rooms.some(
+                room => room.secret === decoder.decode(password)
+            ));
+
+        if (isUserValid) userClients.set(client.id, user);
+        return callback(null, isUserValid);
+    };
+
+    const isClientAllowed = async (client: Aedes.Client, topic: string) => {
+        if (!client.id || !userClients.has(client.id)) ["Not authenticated", null];
+        const user = userClients.get(client.id);
+        const rooms = await getUserRooms(user.id);
+        if (rooms.some(itm => itm.mqtt_topic === topic)) {
+            return [null, true];
+        }
+        return ["No such room", null];
+    }
+
+    mqtt.authorizeSubscribe = async (client, sub, callback) => {
+        if (!/attnbtn\/messages\/[0-9a-f]{64}/.test(sub.topic)) {
+            return callback(new Error("Invalid topic"), null);
+        }
+
+        const [msg, success] = await isClientAllowed(client, sub.topic);
+        if (!success) {
+            const err = new Error((typeof msg === 'string' && msg.length) ? msg : 'Unknown error occurred.');
+            return callback(err, null);
+        }
+
+        return callback(null, sub);
+    };
+
+    const decodePayload = (payload: string | Buffer<ArrayBufferLike>) => {
+        console.log(payload.length);
+        if (typeof payload !== 'string') {
+            return decoder.decode(payload);
+        }
+        return payload;
+    }
+
+
+    const schema = z.string().refine(
+        (val) => {
+            const match = val.match(/^#([^#]+)#([^#]+)#$/);
+            if (!match) return false;
+
+            const [, email, str] = match;
+            return z.string().email().safeParse(email).success && str.length < 24;
+        },
+        { message: "Invalid format or constraints not met" }
+    );
+
+    mqtt.authorizePublish = async (client, packet, callback) => {
+        const [msg, success] = await isClientAllowed(client, packet.topic);
+        if (!success) {
+            const err = new Error((typeof msg === 'string' && msg.length) ? msg : 'Unknown error occurred.');
+            return callback(err);
+        }
+
+        const decoded = decodePayload(packet.payload);
+        if (decoded.length > 512) return callback(new Error("Packet too long."));
+        const parsed = schema.safeParse(decoded);
+        if (!parsed.success) {
+            return callback(fromError(parsed.error));
+        }
+        return callback(null);
+    }
+
+    return {
+        instance: mqtt,
+        createListener() {
+            return config.mqttTls
+                ? tls.createServer(
+                    {
+                        key: fs.readFileSync(config.keyPath),
+                        cert: fs.readFileSync(config.certPath),
+                        ca: fs.readFileSync(config.caPath),
+                        requestCert: true,
+                        rejectUnauthorized: true, // Ensure client certs are validated
+                    },
+                    (socket) => mqtt.handle(socket)
+                )
+                : net.createServer((socket) => mqtt.handle(socket));
+        }
+    }
+}
