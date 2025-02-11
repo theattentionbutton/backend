@@ -55,7 +55,9 @@
                     <span>Just you. Invite someone!</span>
                     {% endif %}
                 </div>
-                <div><a href="/rooms/{{ room.id }}">Manage</a></div>
+                <div>
+                    <a href="/rooms/{{ room.id }}">{% if room.isOwner %}Manage{% else %}View{% endif %}</a>
+                </div>
             </div>
         </div>
         {% endfor %}
