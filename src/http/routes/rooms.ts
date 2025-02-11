@@ -49,7 +49,8 @@ export const manage: express.Handler = async (req, res) => {
         heading: `Room "${room.meta.name}"${count}`,
         isOwner: room.meta.owner === req.session.user.id,
         username: req.session.user.username,
-        user_id: req.session.user.id
+        user_id: req.session.user.id,
+        secret_parts: room.meta.secret.split(' ')
     });
 }
 

@@ -6,6 +6,18 @@
 
 <h3>Members</h3>
 <section class="members">
+    <details>
+        <summary class="invert">Room secret</summary>
+        <div class=warning><strong>WARNING</strong>: Whoever has this secret can connect to your Attention Button! Be
+            careful!</div>
+        <div class="secret-wrapper">
+            {% for part in secret_parts %}
+            <span class="secret-part">{{ part }}</span>
+            {% endfor %}
+        </div>
+        {% %}
+    </details>
+
     {% if isOwner %}
     <details open>
         <summary class="invert">Invite a new member</summary>
