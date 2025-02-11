@@ -103,8 +103,8 @@ details form {
     }
 
     .secret-wrapper {
-        display: grid;
-        place-items: center;
-        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
     }
 }
