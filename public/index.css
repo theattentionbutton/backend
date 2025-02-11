@@ -3,6 +3,10 @@
     margin-top: 2rem;
 }
 
+p.login-cta {
+    text-align: center;
+}
+
 .tagline {
     text-align: center;
     font-size: 1.5rem;
