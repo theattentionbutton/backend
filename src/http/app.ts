@@ -92,7 +92,6 @@ export const createApp = () => {
     app.use(express.urlencoded({ extended: true }));
     app.use(makeSession());
     app.use(makeCors());
-    app.use(req => console.log(req.header('X-Forwarded-For')));
 
     app.get("/", index.get);
     app.get("/store", store.get);
