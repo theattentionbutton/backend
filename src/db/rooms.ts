@@ -7,7 +7,7 @@ export const getUserRooms = async (userId: string) => {
         .selectFrom('rooms')
         .innerJoin('memberships', 'memberships.room', 'rooms.id')
         .where('memberships.user', '=', userId)
-        .select('rooms.id')
+        .select(['rooms.id', 'rooms.mqtt_topic', 'rooms.secret'])
         .orderBy('rooms.created_at', 'desc')
         .execute();
 }

@@ -10,7 +10,8 @@ export interface Database {
         id: string,
         name: string,
         count: number,
-        owner: string
+        owner: string,
+        secret: string
     }
 }
 
@@ -106,6 +107,7 @@ await db.schema
             'rooms.id as id',
             'rooms.name as name',
             'rooms.owner as owner',
+            'rooms.secret as secret',
             sql<number>`count(memberships.user)`.as('count')
         ])
         .groupBy('rooms.id')
