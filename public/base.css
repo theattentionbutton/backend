@@ -252,10 +252,22 @@ section {
 
     details {
         max-width: 100%;
+        width: calc(100% - 2rem);
     }
 
     h1 {
         font-size: 1.6rem;
+    }
+
+    h1,
+    h2,
+    h3 {
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+    }
+
+    header>* {
+        min-height: 3rem;
     }
 
     footer ul {
@@ -267,5 +279,6 @@ section {
 
     html {
         min-height: 100%;
+        display: block;
     }
 }

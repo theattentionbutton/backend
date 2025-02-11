@@ -74,6 +74,10 @@ ul {
     border-radius: 0.2rem;
 }
 
+details form {
+    width: calc(100% - 1rem);
+}
+
 .secret-wrapper {
     display: flex;
     gap: 1rem;
