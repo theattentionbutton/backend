@@ -73,7 +73,7 @@ export const createMqtt = () => {
             const match = val.match(/^#([^#]+)#([^#]+)#$/);
             if (!match) return false;
 
-            const [, email, str] = match;
+            const [, str, email] = match;
             return z.string().email().safeParse(email).success && str.length < 24;
         },
         { message: "Invalid format or constraints not met" }
