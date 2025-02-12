@@ -108,6 +108,10 @@ export const createMqtt = () => {
         console.debug(`[debug] client ${client.id} sent a ${packet.cmd}`);
     })
 
+    mqtt.addListener('clientError', (client, error) => {
+        console.debug(`[debug] client ${client.id} error {${error}}`);
+    })
+
     return {
         instance: mqtt,
         createListener() {
