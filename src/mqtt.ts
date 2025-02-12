@@ -10,7 +10,7 @@ import { z } from "zod";
 import { fromError } from "zod-validation-error";
 
 export const createMqtt = () => {
-    const mqtt = Aedes.createBroker({ keepaliveLimit: 200 });
+    const mqtt = Aedes.createBroker();
 
     const userClients = new Map<string, User>();
     const decoder = new TextDecoder('UTF-8');
