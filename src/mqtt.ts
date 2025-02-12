@@ -74,7 +74,7 @@ export const createMqtt = () => {
             if (!match) return false;
 
             const [, str, email] = match;
-            return z.string().email().safeParse(email).success && str.length < 24;
+            return z.string().email().safeParse(email).success && str.length <= 24;
         },
         { message: "Invalid format or constraints not met" }
     );
@@ -96,6 +96,7 @@ export const createMqtt = () => {
         if (!parsed.success) {
             return callback(fromError(parsed.error));
         }
+        console.log(`[debug] allowed ${decoded}`);
         return callback(null);
     }
 
