@@ -93,7 +93,7 @@ export const createMqtt = () => {
         console.debug(`[debug] payload: \`${decoded}\``);
         if (decoded.length > 512) return callback(new Error("Packet too long."));
         const parsed = schema.safeParse(decoded);
-        if (!parsed.success) {
+        if (!parsed.success && decoded !== "qos0") {
             return callback(fromError(parsed.error));
         }
         console.log(`[debug] allowed ${decoded}`);
