@@ -25,6 +25,7 @@ export const createMqtt = () => {
             ));
 
         if (isUserValid) userClients.set(client.id, user);
+        console.debug(`[debug] client ${client.id} authed for user ${user.username}`);
         return callback(null, isUserValid);
     };
 
@@ -38,6 +39,7 @@ export const createMqtt = () => {
         const user = userClients.get(client.id);
         const rooms = await getUserRooms(user.id);
         if (rooms.some(itm => itm.mqtt_topic === parsedTopic)) {
+            console.log(`[debug] client ${client.id} authorized for ${parsedTopic} as ${user.username}`);
             return [null, true];
         }
 
@@ -54,7 +56,6 @@ export const createMqtt = () => {
             const err = new Error((typeof msg === 'string' && msg.length) ? msg : 'Unknown error occurred.');
             return callback(err, null);
         }
-
         return callback(null, sub);
     };
 
@@ -94,6 +95,7 @@ export const createMqtt = () => {
         if (!parsed.success) {
             return callback(fromError(parsed.error));
         }
+        console.debug(`[debug] payload: \`${decoded}\``);
         return callback(null);
     }
 
