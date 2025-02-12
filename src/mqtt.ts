@@ -40,6 +40,8 @@ export const createMqtt = () => {
         if (rooms.some(itm => itm.mqtt_topic === parsedTopic)) {
             return [null, true];
         }
+
+        return ["Unknown error", null];
     }
 
     mqtt.authorizeSubscribe = async (client, sub, callback) => {
@@ -77,6 +79,9 @@ export const createMqtt = () => {
     );
 
     mqtt.authorizePublish = async (client, packet, callback) => {
+        if (packet.topic.startsWith('$SYS')) {
+            return callback(new Error('$SYS' + ' topic is reserved'))
+        }
         const [msg, success] = await isClientAllowed(client, packet.topic);
         if (!success) {
             const err = new Error((typeof msg === 'string' && msg.length) ? msg : 'Unknown error occurred.');
