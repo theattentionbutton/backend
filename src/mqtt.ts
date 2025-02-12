@@ -10,7 +10,7 @@ import { z } from "zod";
 import { fromError } from "zod-validation-error";
 
 export const createMqtt = () => {
-    const mqtt = Aedes.createBroker();
+    const mqtt = Aedes.createBroker({ keepaliveLimit: 200 });
 
     const userClients = new Map<string, User>();
     const decoder = new TextDecoder('UTF-8');
@@ -98,6 +98,14 @@ export const createMqtt = () => {
         console.debug(`[debug] payload: \`${decoded}\``);
         return callback(null);
     }
+
+    mqtt.addListener('keepaliveTimeout', (client: Aedes.Client) => {
+        console.debug(`[debug] client ${client.id} timed out`)
+    });
+
+    mqtt.addListener('ping', (packet: Aedes.PingreqPacket, client: Aedes.Client) => {
+        console.debug(`[debug] client ${client.id} sent a ${packet.cmd}`);
+    })
 
     return {
         instance: mqtt,
