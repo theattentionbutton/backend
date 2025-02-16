@@ -3,8 +3,17 @@
     margin-top: 2rem;
 }
 
-p.login-cta {
+.ctas p {
     text-align: center;
+}
+
+.ctas p:first-of-type {
+    margin-top: 1rem;
+}
+
+.ctas p {
+    margin-bottom: 0.25rem;
+    margin-top: 0.25rem;
 }
 
 .tagline {
