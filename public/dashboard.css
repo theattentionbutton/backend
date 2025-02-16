@@ -51,7 +51,7 @@ div.rooms {
     flex-direction: column;
     height: 9rem;
     width: 100%;
-    background-color: #f1ffae;
+    background-color: #fff6ae;
 }
 
 .room-member-count {
