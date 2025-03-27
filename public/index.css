@@ -24,6 +24,39 @@
     padding: 1rem;
 }
 
+
+ol.ol-graphic {
+    list-style-type: none;
+    display: flex;
+    padding-inline-start: 0;
+    gap: 1rem;
+    margin-top: 0.75cm;
+}
+
+ol.ol-graphic li {
+    background: rgb(250, 123, 144);
+    color: #3f3f3f;
+    border: 3px solid #3f3f3f;
+    padding: 0.25cm;
+    padding-top: 0.5cm;
+    padding-bottom: 0.5cm;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    width: 33.33%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+ol.ol-graphic li.chevron {
+    font-size: 3rem;
+    width: 10px;
+    background-color: transparent;
+    border: none;
+    padding: 0.1cm;
+}
+
 @media (max-aspect-ratio: 1/1) {
     #hero-image {
         width: 80%;
