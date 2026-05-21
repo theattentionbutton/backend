@@ -16,7 +16,9 @@ WORKDIR /app
 RUN apk add --no-cache dumb-init
 
 COPY --from=builder /app/pnpm-lock.yaml /app/package.json ./
-RUN corepack enable && pnpm install --frozen-lockfile --prod
+COPY --from=builder /app/node_modules ./node_modules
+
+RUN corepack enable
 
 COPY --from=builder /app/src/ ./src/
 COPY --from=builder /app/templates/ ./templates/
@@ -27,5 +29,6 @@ RUN mkdir -p /app/storage
 ENV NODE_ENV=production
 
 USER node
+EXPOSE 8000
 
 CMD ["dumb-init", "node", "src/main.ts"]
