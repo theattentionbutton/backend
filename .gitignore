@@ -4,3 +4,6 @@ config.prod.json
 *.js
 config.json
 *.db
+.env
+storage/
+node_modules/

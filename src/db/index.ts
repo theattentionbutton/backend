@@ -47,8 +47,9 @@ export interface Invite {
     room_id: string;
 }
 
+const dbPath = process.env.TAB_DB_PATH || "./storage/tab-backend.db";
 const dialect = new SqliteDialect({
-    database: new SQLite('./tab-backend.db'),
+    database: new SQLite(dbPath),
 });
 
 export const db = new Kysely<Database>({ dialect });

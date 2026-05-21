@@ -49,7 +49,8 @@ const limiter6pm = makeLimiter(6);
 const limiter2pm = makeLimiter(2);
 
 const makeSession = () => {
-    const db = new sqlite("sessions.db");
+    const sessionDbPath = process.env.TAB_SESSION_DB_PATH || "./storage/sessions.db";
+    const db = new sqlite(sessionDbPath);
     return session({
         resave: false,
         saveUninitialized: false,
