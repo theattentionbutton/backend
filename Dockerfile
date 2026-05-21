@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Install python/pip
 ENV PYTHONUNBUFFERED=1
-RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+RUN apk add --update --no-cache python3 make && ln -sf python3 /usr/bin/python
 
 COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
 RUN corepack enable && pnpm install --frozen-lockfile
