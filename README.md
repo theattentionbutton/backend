@@ -5,6 +5,24 @@ This is the backend implementation for the
 authentication, and API requests. It is designed to run behind an Nginx instance
 that handles TLS termination.
 
+## Screenshots
+
+**The site.** The public landing page, with the device itself.
+
+![The Attention Button landing page, showing the product photo, the tagline, and the FAQ](res/shot-landing.png)
+
+**The dashboard.** A signed-in user sees their rooms, the create form, and any
+pending invites.
+
+![The dashboard, showing two rooms, the create form, and one invite](res/shot-dashboard.png)
+
+**Managing a room.** Room secrets, invites, and members all live on one page.
+
+![The room management page, with the room secret, an invite form, the member list, and a pending invite](res/shot-room.png)
+
+These pages are rendered from this project's own Liquid templates and
+stylesheets, filled with example content.
+
 ## Usage
 
 ### Running the Backend
